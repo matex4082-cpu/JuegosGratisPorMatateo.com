@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colección De Juegos Gratis De Matateo - PC & Android</title>
+    <!-- Icono de la pestaña vinculado desde la carpeta otros -->
+    <link rel="icon" type="image/png" href="otros/icono.png">
+    <style>
+        /* Desplazamiento suave para toda la página */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Estilos generales (Modo Oscuro Gamer) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #121214;
+            color: #e1e1e6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* HEADER FLEXIBLE: Título a la izquierda, Buscador a la derecha */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            padding: 10px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            max-height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #202024;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid #323238;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 0.95rem;
+            width: 220px;
+        }
+
+        .search-container input::placeholder {
+            color: #7c7c8a;
+        }
+
+        .search-btn {
+            background-color: #00b4d8;
+            color: #121214;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .search-btn:hover {
+            background-color: #0096c7;
+            transform: scale(1.03);
+        }
+
+        /* Estilo para el aviso de advertencia general */
+        .warning-banner {
+            position: relative; /* Necesario para posicionar el botón de cierre */
+            background-color: #2a2212;
+            border: 2px solid #ffb703;
+            color: #ffb703;
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            padding: 15px 20px 15px 45px; /* Padding izquierdo para dar espacio al botón */
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(255, 183, 3, 0.1);
+        }
+
+        .warning-banner span {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Botón de cierre genérico para esquina superior izquierda */
+        .close-btn-left {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            background: transparent;
+            border: none;
+            color: #ffb703;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .close-btn-left:hover {
+            background-color: rgba(255, 183, 3, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Contenedor de la cuadrícula de juegos */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* Tarjeta individual de cada juego */
+        .game-card {
+            background-color: #202024;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.2);
+        }
+
+        .game-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .game-details {
+            font-size: 0.85rem;
+            color: #a8a8b3;
+            margin-bottom: 4px;
+        }
+
+        /* Contenedor de los botones de descarga */
+        .download-container {
+            padding: 15px;
+            padding-top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .download-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        /* Estilo específico para los botones */
+        .btn-pc {
+            background-color: #00b4d8;
+            color: #121214;
+        }
+
+        .btn-android {
+            background-color: #38b000;
+            color: #ffffff;
+        }
+
+        .btn-mod {
+            background-color: #7209b7;
+            color: #ffffff;
+        }
+
+        .btn-youtube {
+            background-color: #ff0000;
+            color: #ffffff;
+        }
+
+        /* MODAL AMARILLO PERSONALIZADO DE ADVERTENCIA */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            position: relative; /* Necesario para posicionar la 'X' superior izquierda */
+            background-color: #2a2212;
+            border: 2px solid #ffb703;
+            border-radius: 12px;
+            padding: 25px 30px;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            color: #ffb703;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
+        }
+
+        .modal-text {
+            color: #f1f1f1;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .modal-question {
+            color: #ffb703;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.15s ease, opacity 0.2s ease;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .btn-confirm {
+            background-color: #38b000;
+            color: #ffffff;
+        }
+
+        .btn-cancel {
+            background-color: #e63946;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- GIF de título alineado a la izquierda -->
+        <div class="header-logo">
+            <img src="otros/titulo.gif" alt="Juegos Gratis por Matateo">
+        </div>
+
+        <!-- Barra y botón de búsqueda alineados a la derecha -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar juego...">
+            <button class="search-btn" id="searchBtn">🔍 Buscar</button>
+        </div>
+    </header>
+
+    <!-- Caja de advertencia general con botón de salida -->
+    <div class="warning-banner" id="warningBanner">
+        <button class="close-btn-left" id="closeBannerBtn" aria-label="Cerrar advertencia">✖</button>
+        <span>⚠️ ¡ADVERTENCIA!</span> Estos juegos los saco de servidores y páginas 100% confiables, y los he probado y no me ha pasado nadita. Por eso tienen diferentes nombres, ten un buen día.
+    </div>
+
+    <!-- INICIO DE LA CUADRÍCULA -->
+    <div class="game-grid" id="gameGrid">
+
+        <!-- CUPHEAD + DLC -->
+        <div class="game-card">
+            <img src="Portadas/cuphead.jpg" alt="Cuphead + DLC" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Cuphead + The Delicious Last Course</h3>
+                <p class="game-details">📦 Peso PC: ~4.46 GB</p>
+                <p class="game-details">📦 Peso Android: ~2.25 GB</p>
+                <p class="game-details">🎮 Género: Acción / Plataformas</p>
+            </div>
+            <div class="download-container">
+                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/xymvjgi8eti16ht/Cuphead_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                <a href="https://www.mediafire.com/file/f3oodz5wp9gvrcy/cuphead_170b4.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
+            </div>
+        </div>
+
+        <!-- HOLLOW KNIGHT -->
+        <div class="game-card">
+            <img src="Portadas/hollowknight.jpg" alt="Hollow Knight" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Hollow Knight</h3>
+                <p class="game-details">📦 Peso PC: ~1.05 GB</p>
+                <p class="game-details">📦 Peso Android: ~931 MB</p>
+                <p class="game-details">🎮 Género: Metroidvania / Acción</p>
+            </div>
+            <div class="download-container">
+                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
+            </div>
+        </div>
+
+        <!-- UNDERTALE -->
+        <div class="game-card">
+            <img src="Portadas/undertale.jpg" alt="Undertale" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Undertale</h3>
+                <p class="game-details">📦 Peso PC: ~135.38 MB</p>
+                <p class="game-details">📦 Peso Android: ~174.12 MB</p>
+                <p class="game-details">🎮 Género: RPG / Indie</p>
+            </div>
+            <div class="download-container">
+                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
+            </div>
+        </div>
+
+        <!-- PLANTS VS ZOMBIES -->
+        <div class="game-card">
+            <img src="Portadas/pvz.jpg" alt="Plants vs Zombies" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Plants vs. Zombies</h3>
+                <p class="game-details">📦 Peso PC: ~246.96 MB</p>
+                <p class="game-details">🎮 Género: Estrategia / Tower Defense</p>
+            </div>
+            <div class="download-container">
+                <!-- Botón que activa el modal de advertencia exclusivo de PVZ -->
+                <button class="download-btn btn-pc" id="btn-pvz" data-link="https://www.mediafire.com/file/3o4ca4f8xyu7ea0/PVZ+Ultimate+por+juegos+matateo.rar/file">💻 Descargar para PC</button>
+            </div>
+        </div>
+
+        <!-- GEOMETRY DASH -->
+        <div class="game-card">
+            <img src="Portadas/geometrydash.jpg" alt="Geometry Dash" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Geometry Dash</h3>
+                <p class="game-details">📦 Peso PC: ~273.11 MB</p>
+                <p class="game-details">📦 Peso Android: ~171.97 MB</p>
+                <p class="game-details">🎮 Género: Plataformas / Rhythm</p>
+            </div>
+            <div class="download-container">
+                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/fwtyq3xfi3mzz6y/Geometry+Dash+Por+Juegos+Matateo+(mentira+se+los+robo+al+enemigos).rar/file">💻 Descargar para PC</button>
+                <a href="https://www.mediafire.com/file/55phkseylizs8tf/Geo-Dash-v2.2.144-Full-ByBob.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
+                <a href="https://www.mediafire.com/file/nsfaqr1ofrprff9/Geometry+dash+todo+desbloqueado+apk+por+juegos+matateo.apk/file" target="_blank" class="download-btn btn-mod">🔓 Descargar APK Mod (Todo Desbloqueado)</a>
+            </div>
+        </div>
+
+        <!-- COUNTER-STRIKE 1.6 -->
+        <div class="game-card">
+            <img src="Portadas/cs16.jpg" alt="Counter-Strike 1.6" class="game-img">
+            <div class="game-info">
+                <h3 class="game-title">Counter-Strike 1.6</h3>
+                <p class="game-details">📦 Formato: Instalador EXE</p>
+                <p class="game-details">📦 Peso PC: ~260 MB</p>
+                <p class="game-details">🎮 Género: Shooter / FPS / Acción</p>
+            </div>
+            <div class="download-container">
+                <a href="https://nextclient.ru" target="_blank" class="download-btn btn-pc">💻 Instalador (no virus)</a>
+                <a href="https://youtu.be/YUlI5y33PIw?si=TLoQQc_1s2_d0sv2" target="_blank" class="download-btn btn-youtube">▶️ Video de YouTube (video no mío)</a>
+            </div>
+        </div>
+
+    </div> <!-- FIN DE LA CUADRÍCULA -->
+
+    <!-- MODAL 1: ADVERTENCIA GENERAL DE CONTRASEÑA PARA JUEGOS DE PC -->
+    <div class="modal-overlay" id="pcModal">
+        <div class="modal-box">
+            <button class="close-btn-left close-pc-modal" aria-label="Cerrar modal">✖</button>
+            <h2 class="modal-title">¡ADVERTENCIA!</h2>
+            <p class="modal-text">Si tiene alguna palabra relacionada con <b>El enemigos</b> en el nombre del archivo, la contraseña va a ser <b>elenemigos.com</b></p>
+            <div class="modal-buttons">
+                <a href="#" id="pcConfirmBtn" target="_blank" class="modal-btn btn-confirm">ok</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADVERTENCIA INTEGRADA DE PVZ -->
+    <div class="modal-overlay" id="pvzModal">
+        <div class="modal-box">
+            <button class="close-btn-left close-pvz-modal" aria-label="Cerrar modal">✖</button>
+            <h2 class="modal-title">¡ADVERTENCIA!</h2>
+            <p class="modal-text">Este juego es una versión mejorada, no es el Game Of the year edition. NI PVZ REPLANTED.</p>
+            <p class="modal-question">¿Estás seguro que quieres descargar?</p>
+            <div class="modal-buttons">
+                <a href="#" id="modalConfirmBtn" target="_blank" class="modal-btn btn-confirm">Sí, descargar</a>
+                <button id="modalCancelBtn" class="modal-btn btn-cancel">No, cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LÓGICA DE CIERRE BANNER SUPERIOR ---
+        const closeBannerBtn = document.getElementById('closeBannerBtn');
+        const warningBanner = document.getElementById('warningBanner');
+
+        if (closeBannerBtn && warningBanner) {
+            closeBannerBtn.addEventListener('click', function() {
+                warningBanner.style.display = 'none';
+            });
+        }
+
+        // --- LÓGICA MODAL PVZ ---
+        const btnPvz = document.getElementById('btn-pvz');
+        const modal = document.getElementById('pvzModal');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const closePvzModalBtn = document.querySelector('.close-pvz-modal');
+
+        if (btnPvz) {
+            btnPvz.addEventListener('click', function() {
+                const linkDescarga = this.getAttribute('data-link');
+                modalConfirmBtn.href = linkDescarga;
+                modal.classList.add('active');
+            });
+        }
+
+        if (closePvzModalBtn) {
+            closePvzModalBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+        }
+
+        modalCancelBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        modalConfirmBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        // --- LÓGICA MODAL CONTRASEÑA PC ---
+        const pcModal = document.getElementById('pcModal');
+        const pcConfirmBtn = document.getElementById('pcConfirmBtn');
+        const pcButtons = document.querySelectorAll('.btn-pc-modal');
+        const closePcModalBtn = document.querySelector('.close-pc-modal');
+
+        pcButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const linkDescarga = this.getAttribute('data-link');
+                pcConfirmBtn.href = linkDescarga;
+                pcModal.classList.add('active');
+            });
+        });
+
+        if (closePcModalBtn) {
+            closePcModalBtn.addEventListener('click', function() {
+                pcModal.classList.remove('active');
+            });
+        }
+
+        pcConfirmBtn.addEventListener('click', function() {
+            pcModal.classList.remove('active');
+        });
+
+        // Cerrar modales al hacer clic fuera del cuadro
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+            if (e.target === pcModal) {
+                pcModal.classList.remove('active');
+            }
+        });
+
+        // --- LÓGICA BÚSQUEDA EN TIEMPO REAL ---
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const gameCards = document.querySelectorAll('.game-card');
+
+        function filterGames() {
+            const query = searchInput.value.toLowerCase().trim();
+            gameCards.forEach(card => {
+                const title = card.querySelector('.game-title').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterGames);
+        searchBtn.addEventListener('click', filterGames);
+    </script>
+
+</body>
+</html>
