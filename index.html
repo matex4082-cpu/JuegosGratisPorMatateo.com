@@ -668,6 +668,16 @@
             });
         }
 
+        // --- LÓGICA MODAL PVZ Y MODAL PC ---
+        const modal = document.getElementById('pvzModal');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const closePvzModalBtn = document.querySelector('.close-pvz-modal');
+
+        const pcModal = document.getElementById('pcModal');
+        const pcConfirmBtn = document.getElementById('pcConfirmBtn');
+        const closePcModalBtn = document.querySelector('.close-pc-modal');
+
         // --- DELEGACIÓN DE EVENTOS PARA REUTILIZAR BOTONES DE MODAL EN EL JUEGO DEL DÍA ---
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('btn-pvz-trigger')) {
@@ -683,40 +693,37 @@
             }
         });
 
-        // --- LÓGICA MODAL PVZ ---
-        const modal = document.getElementById('pvzModal');
-        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-        const modalCancelBtn = document.getElementById('modalCancelBtn');
-        const closePvzModalBtn = document.querySelector('.close-pvz-modal');
-
+        // Eventos Modal PVZ
         if (closePvzModalBtn) {
             closePvzModalBtn.addEventListener('click', function() {
                 modal.classList.remove('active');
             });
         }
 
-        modalCancelBtn.addEventListener('click', function() {
-            modal.classList.remove('active');
-        });
+        if (modalCancelBtn) {
+            modalCancelBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+        }
 
-        modalConfirmBtn.addEventListener('click', function() {
-            modal.classList.remove('active');
-        });
+        if (modalConfirmBtn) {
+            modalConfirmBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+        }
 
-        // --- LÓGICA MODAL CONTRASEÑA PC ---
-        const pcModal = document.getElementById('pcModal');
-        const pcConfirmBtn = document.getElementById('pcConfirmBtn');
-        const closePcModalBtn = document.querySelector('.close-pc-modal');
-
+        // Eventos Modal PC
         if (closePcModalBtn) {
             closePcModalBtn.addEventListener('click', function() {
                 pcModal.classList.remove('active');
             });
         }
 
-        pcConfirmBtn.addEventListener('click', function() {
-            pcModal.classList.remove('active');
-        });
+        if (pcConfirmBtn) {
+            pcConfirmBtn.addEventListener('click', function() {
+                pcModal.classList.remove('active');
+            });
+        }
 
         // Cerrar modales al hacer clic fuera del cuadro
         window.addEventListener('click', function(e) {
@@ -745,10 +752,10 @@
             });
         }
 
-        searchInput.addEventListener('input', filterGames);
-        searchBtn.addEventListener('click', filterGames);
+        if (searchInput) searchInput.addEventListener('input', filterGames);
+        if (searchBtn) searchBtn.addEventListener('click', filterGames);
 
-        // --- LÓGICA JUEGO DEL DÍA (SE ACTUALIZA CADA 24 HORAS) ---
+        // --- LÓGICA JUEGO DEL DÍA (SE ACTUALIZA CADA 24 HORAS EN UTC) ---
         function setupDailyGame() {
             const allCards = document.querySelectorAll('.left-content .game-card');
             if (allCards.length === 0) return;
@@ -771,15 +778,15 @@
             function updateTimer() {
                 const nowTime = new Date();
                 const tomorrowUTC = new Date(Date.UTC(nowTime.getUTCFullYear(), nowTime.getUTCMonth(), nowTime.getUTCDate() + 1));
-                const diffMs = tomorrowUTC - nowTime;
+                const diff = tomorrowUTC - nowTime;
 
-                const hours = Math.floor(diffMs / (1000 * 60 * 60));
-                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
                 const timerElement = document.getElementById('dailyTimer');
                 if (timerElement) {
-                    timerElement.textContent = `⏱️ Nuevo juego en: ${hours}h ${minutes}m ${seconds}s`;
+                    timerElement.textContent = `⏱️ Se actualiza en: ${hours}h ${minutes}m ${seconds}s`;
                 }
             }
 
@@ -787,8 +794,8 @@
             setInterval(updateTimer, 1000);
         }
 
-        setupDailyGame();
+        // Ejecutar al cargar la página
+        document.addEventListener('DOMContentLoaded', setupDailyGame);
     </script>
-
 </body>
 </html>
