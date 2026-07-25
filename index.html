@@ -41,7 +41,8 @@
         body.light-mode .game-card,
         body.light-mode #configModal .modal-box,
         body.light-mode #pcModal .modal-box,
-        body.light-mode #pvzModal .modal-box {
+        body.light-mode #pvzModal .modal-box,
+        body.light-mode #fnafModal .modal-box {
             background-color: #ffffff;
             color: #1a1a1a;
             border-color: #dcdcdc;
@@ -368,6 +369,7 @@
         .btn-android { background-color: #38b000; color: #ffffff; }
         .btn-mod { background-color: #7209b7; color: #ffffff; }
         .btn-youtube { background-color: #ff0000; color: #ffffff; }
+        .btn-collection { background-color: #ff7700; color: #ffffff; }
 
         /* MODALES */
         .modal-overlay {
@@ -404,6 +406,8 @@
             box-shadow: 0 0 25px rgba(0, 180, 216, 0.3);
             transform: scale(0.8);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-box {
@@ -531,12 +535,24 @@
                     <div class="game-info">
                         <h3 class="game-title">Among Us</h3>
                         <p class="game-details" style="color: #ffb703; font-weight: bold;" data-translate="const_update">🔄 (Actualizado constante)</p>
-                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~844 MB</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~250 MB</p>
                         <p class="game-details" data-translate="genre_amongus">🎮 Género: Deducción Social / Multijugador</p>
                     </div>
                     <div class="download-container">
-                        <!-- Reemplaza el enlace de aquí abajo por el de la página externa -->
                         <a href="https://tunnel5.dlproxy.uk/download/uIjOxEsTAf4cT61wgQgTbIz9AhVdf7bX9yFZ26evsuA1xeAZtx7tFT40LJNmJQpV2tgEI2CRTDBWp8fD8oFiIFXZjJD6miPdMqB9YTuQYDFHumUprSaIX2PTJqBkHTDfVIBmCAAoD1flFw8JjDj2irh-nXRiTJ7TgfAm4RvL6MFqrvtKI5CeNTX5_UHvmneQEwkE2MVM-PFumlkmJK_wjYibbCqgdLMXZ8eYL4eka0QFHeIH7Uo9IE7eeqf-JpqbxRHtXdy5uVRtVx_ODxOm3c9UH3rcUqskuGgAnIVU_aB5rZW6v2MRtYtbs9uV5_cf4Ut3l_DZeE2oYcZGl4YEROcGEMNYuwIHMAdulF7YyyEafy2lmkZuZzUNEmS_ZXE9gc-evJ-cL8zmYYsGXh_VbQ?sig=TemQufYrgJ4x-9r4mmETUkkufuVuIwiC9Dd7BdXsprQ" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc"><span data-translate="download_pc">💻 Descargar para PC</span></a>
+                    </div>
+                </div>
+
+                <!-- FNAF: Primera Colección -->
+                <div class="game-card">
+                    <img src="portadas/fnaf.png" alt="FNAF: Primera Colección" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title" data-translate="fnaf_collection_title">FNAF: Primera Colección</h3>
+                        <p class="game-details" data-translate="fnaf_collection_desc">📦 Incluye: FNAF 1, 2, 3, 4, 5 y Pizzeria Simulator</p>
+                        <p class="game-details" data-translate="genre_fnaf">🎮 Género: Terror / Survival Horror</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-collection" id="openFnafModalBtn"><span data-translate="btn_view_games">📂 Ver Juegos Disponibles</span></button>
                     </div>
                 </div>
 
@@ -624,7 +640,7 @@
                         <p class="game-details" data-translate="genre_hk">🎮 Género: Metroidvania / Acción</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight+b21656419+ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
                         <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
@@ -683,7 +699,7 @@
                     </div>
                     <div class="download-container">
                         <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
-                        <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
+                        <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
@@ -725,6 +741,29 @@
             <div class="modal-buttons">
                 <button class="modal-btn btn-cancel" id="closeConfigModalBtn" data-translate="btn_close">Cerrar</button>
                 <button class="modal-btn btn-confirm" id="saveConfigBtn" data-translate="btn_save">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FNAF: PRIMERA COLECCIÓN -->
+    <div class="modal-overlay" id="fnafModal">
+        <div class="modal-box" style="text-align: center; max-width: 550px;">
+            <button class="close-btn-left close-fnaf-modal" aria-label="Cerrar modal">✖</button>
+            <h2 class="modal-title" data-translate="fnaf_modal_title">🐻 FNAF: Primera Colección 🍕</h2>
+            <p class="modal-text" style="text-align: center; margin-bottom: 20px;" data-translate="fnaf_modal_subtitle">Selecciona el juego que deseas descargar:</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Cambia los enlaces de aquí por los de cada juego -->
+                <a href="https://drive.google.com/file/d/1a7CijpLl0vR0Bc_D0twfrTMwEl7XFTkI/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🐻 <span data-translate="fnaf_1">Five Nights at Freddy's 1</span></a>
+                <a href="https://drive.google.com/file/d/1P5WXez6dyqo7_koj4vea0HFvGEewgDa6/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🐰 <span data-translate="fnaf_2">Five Nights at Freddy's 2</span></a>
+                <a href="https://drive.google.com/file/d/11vZXh9HTy25zqqQL-Pb-mQZdZlQb4Yv0/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🦊 <span data-translate="fnaf_3">Five Nights at Freddy's 3</span></a>
+                <a href="https://megadb.net/pmmx9gmcqy48" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🧸 <span data-translate="fnaf_4">Five Nights at Freddy's 4</span></a>
+                <a href="https://megadb.net/xcxu1y39nz35" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🎪 <span data-translate="fnaf_5">Five Nights at Freddy's 5: Sister Location</span></a>
+                <a href="https://store.steampowered.com/app/738060/Freddy_Fazbears_Pizzeria_Simulator/" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">🍕 <span data-translate="fnaf_ps">Freddy Fazbear's Pizzeria Simulator (free on steam)</span></a>
+            </div>
+            
+            <div class="modal-buttons" style="margin-top: 25px;">
+                <button class="modal-btn btn-cancel close-fnaf-modal" data-translate="btn_close">Cerrar</button>
             </div>
         </div>
     </div>
@@ -789,7 +828,22 @@
                 pc_weight: "Peso PC",
                 android_weight: "Peso Android",
                 const_update: "🔄 (Actualizado constante)",
+                
+                // FNAF Texts
+                fnaf_collection_title: "FNAF: Primera Colección",
+                fnaf_collection_desc: "📦 Incluye: FNAF 1, 2, 3, 4, 5 y Pizzeria Simulator",
+                btn_view_games: "📂 Ver Juegos Disponibles",
+                fnaf_modal_title: "🐻 FNAF: Primera Colección 🍕",
+                fnaf_modal_subtitle: "Selecciona el juego que deseas descargar:",
+                fnaf_1: "Five Nights at Freddy's 1",
+                fnaf_2: "Five Nights at Freddy's 2",
+                fnaf_3: "Five Nights at Freddy's 3",
+                fnaf_4: "Five Nights at Freddy's 4",
+                fnaf_5: "Five Nights at Freddy's 5: Sister Location",
+                fnaf_ps: "Freddy Fazbear's Pizzeria Simulator",
+
                 genre_amongus: "🎮 Género: Deducción Social / Multijugador",
+                genre_fnaf: "🎮 Género: Terror / Survival Horror",
                 genre_balatro: "🎮 Género: Roguelike / Cartas / Indieware",
                 genre_celeste: "🎮 Género: Plataformas / Precisión / Aventura",
                 genre_cs16: "🎮 Género: Shooter / FPS / Acción",
@@ -832,7 +886,22 @@
                 pc_weight: "PC Weight",
                 android_weight: "Android Weight",
                 const_update: "🔄 (Constantly updated)",
+
+                // FNAF Texts
+                fnaf_collection_title: "FNAF: First Collection",
+                fnaf_collection_desc: "📦 Includes: FNAF 1, 2, 3, 4, 5 & Pizzeria Simulator",
+                btn_view_games: "📂 View Available Games",
+                fnaf_modal_title: "🐻 FNAF: First Collection 🍕",
+                fnaf_modal_subtitle: "Select the game you want to download:",
+                fnaf_1: "Five Nights at Freddy's 1",
+                fnaf_2: "Five Nights at Freddy's 2",
+                fnaf_3: "Five Nights at Freddy's 3",
+                fnaf_4: "Five Nights at Freddy's 4",
+                fnaf_5: "Five Nights at Freddy's 5: Sister Location",
+                fnaf_ps: "Freddy Fazbear's Pizzeria Simulator",
+
                 genre_amongus: "🎮 Genre: Social Deduction / Multiplayer",
+                genre_fnaf: "🎮 Genre: Horror / Survival Horror",
                 genre_balatro: "🎮 Genre: Roguelike / Cards / Indieware",
                 genre_celeste: "🎮 Genre: Platformer / Precision / Adventure",
                 genre_cs16: "🎮 Genre: Shooter / FPS / Action",
@@ -873,7 +942,6 @@
                 }
             });
 
-            // Cambiar imagen del título según el idioma
             if (lang === 'en') {
                 headerTitleImg.src = 'otros/titulo_eng.gif';
             } else {
@@ -904,7 +972,6 @@
             configModal.classList.remove('active');
         });
 
-        // Cargar preferencias guardadas al iniciar
         window.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('matateo_lang') || 'es';
             const savedTheme = localStorage.getItem('matateo_theme') || 'dark';
@@ -935,7 +1002,7 @@
         }
         setDailyGame();
 
-        // --- TEMPORIZADOR DEL JUEGO DEL DÍA (HORAS, MINUTOS Y SEGUNDOS) ---
+        // --- TEMPORIZADOR DEL JUEGO DEL DÍA ---
         function updateTimer() {
             const now = new Date();
             const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -945,7 +1012,6 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Formatear para que siempre tengan 2 dígitos (ej: 05h 09m 03s)
             const hStr = String(hours).padStart(2, '0');
             const mStr = String(minutes).padStart(2, '0');
             const sStr = String(seconds).padStart(2, '0');
@@ -985,6 +1051,21 @@
                 warningBanner.style.display = 'none';
             });
         }
+
+        // --- MODAL DE FNAF ---
+        const fnafModal = document.getElementById('fnafModal');
+        const openFnafModalBtn = document.getElementById('openFnafModalBtn');
+        const closeFnafModal = document.querySelectorAll('.close-fnaf-modal');
+
+        if (openFnafModalBtn) {
+            openFnafModalBtn.addEventListener('click', () => {
+                fnafModal.classList.add('active');
+            });
+        }
+
+        closeFnafModal.forEach(b => {
+            b.addEventListener('click', () => fnafModal.classList.remove('active'));
+        });
 
         // --- MODAL DE CONTRASEÑA PC ---
         const pcModal = document.getElementById('pcModal');
