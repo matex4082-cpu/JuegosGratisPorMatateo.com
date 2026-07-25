@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colección De Juegos Gratis De Matateo - PC & Android</title>
+    <title data-translate="page_title">Colección De Juegos Gratis De Matateo - PC & Android</title>
     <!-- Icono de la pestaña vinculado desde la carpeta otros -->
     <link rel="icon" type="image/png" href="otros/icono.png">
     <style>
@@ -12,7 +12,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Estilos generales (Modo Oscuro Gamer) */
+        /* Estilos generales (Modo Oscuro por defecto) */
         * {
             margin: 0;
             padding: 0;
@@ -26,9 +26,48 @@
             padding: 20px;
             min-height: 100vh;
             overflow-y: auto;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* HEADER FLEXIBLE: Título a la izquierda, Buscador a la derecha */
+        /* Variables para el Modo Claro */
+        body.light-mode {
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+        }
+
+        body.light-mode header,
+        body.light-mode .search-container,
+        body.light-mode .config-btn,
+        body.light-mode .game-card,
+        body.light-mode #configModal .modal-box,
+        body.light-mode #pcModal .modal-box,
+        body.light-mode #pvzModal .modal-box {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            border-color: #dcdcdc;
+        }
+
+        body.light-mode .search-container input {
+            color: #1a1a1a;
+        }
+
+        body.light-mode .search-container input::placeholder {
+            color: #888888;
+        }
+
+        body.light-mode .game-title {
+            color: #111111;
+        }
+
+        body.light-mode .game-details {
+            color: #555555;
+        }
+
+        body.light-mode .modal-box .modal-text {
+            color: #222222;
+        }
+
+        /* HEADER FLEXIBLE */
         header {
             display: flex;
             justify-content: space-between;
@@ -49,6 +88,13 @@
             max-height: 80px;
             width: auto;
             object-fit: contain;
+        }
+
+        .header-right-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .search-container {
@@ -90,7 +136,28 @@
             transform: scale(1.03);
         }
 
-        /* Estilo para el aviso de advertencia general */
+        /* Botón de configuración */
+        .config-btn {
+            background-color: #202024;
+            color: #e1e1e6;
+            border: 1px solid #323238;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .config-btn:hover {
+            background-color: #29292e;
+            border-color: #00b4d8;
+            transform: scale(1.03);
+        }
+
+        /* Aviso de advertencia */
         .warning-banner {
             position: relative;
             background-color: #2a2212;
@@ -132,7 +199,7 @@
             transform: scale(1.1);
         }
 
-        /* CONTENEDOR PRINCIPAL LAYOUT (IZQUIERDA - DERECHA) */
+        /* LAYOUT PRINCIPAL */
         .main-layout {
             display: flex;
             gap: 35px;
@@ -141,7 +208,6 @@
             align-items: flex-start;
         }
 
-        /* LADO IZQUIERDO: CUADRÍCULA DE JUEGOS */
         .left-content {
             flex: 1;
             min-width: 0;
@@ -153,7 +219,6 @@
             gap: 25px;
         }
 
-        /* LADO DERECHO: JUEGO DEL DÍA (AMPLIADO) */
         .right-sidebar {
             width: 460px;
             flex-shrink: 0;
@@ -169,6 +234,10 @@
             box-shadow: 0 12px 45px rgba(255, 183, 3, 0.3);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.light-mode .daily-game-box {
+            background: linear-gradient(145deg, #ffffff, #fdf6e2);
         }
 
         .daily-game-box:hover {
@@ -188,13 +257,6 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             box-shadow: 0 6px 20px rgba(255, 183, 3, 0.6);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.06); }
-            100% { transform: scale(1); }
         }
 
         .daily-timer {
@@ -209,11 +271,20 @@
             border: 1px solid rgba(255, 183, 3, 0.3);
         }
 
-        /* PERSONALIZACIÓN DE LA TARJETA DENTRO DEL JUEGO DEL DÍA */
+        body.light-mode .daily-timer {
+            color: #333;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
         #dailyGameContainer .game-card {
             background-color: #18181c;
             border: 2px solid #323238;
             border-radius: 16px;
+        }
+
+        body.light-mode #dailyGameContainer .game-card {
+            background-color: #ffffff;
+            border: 2px solid #ddd;
         }
 
         #dailyGameContainer .game-img {
@@ -223,26 +294,9 @@
         #dailyGameContainer .game-title {
             font-size: 1.6rem;
             margin-bottom: 12px;
-            color: #ffffff;
         }
 
-        #dailyGameContainer .game-details {
-            font-size: 1rem;
-            margin-bottom: 6px;
-        }
-
-        #dailyGameContainer .download-container {
-            padding: 20px;
-            gap: 12px;
-        }
-
-        #dailyGameContainer .download-btn {
-            padding: 12px 15px;
-            font-size: 1.05rem;
-            border-radius: 8px;
-        }
-
-        /* Tarjeta individual de cada juego (Estándar para la lista) */
+        /* Tarjeta de juego */
         .game-card {
             background-color: #202024;
             border-radius: 12px;
@@ -283,7 +337,6 @@
             margin-bottom: 4px;
         }
 
-        /* Contenedor de los botones de descarga */
         .download-container {
             padding: 15px;
             padding-top: 0;
@@ -311,28 +364,12 @@
             transform: scale(1.02);
         }
 
-        /* Estilo específico para los botones */
-        .btn-pc {
-            background-color: #00b4d8;
-            color: #121214;
-        }
+        .btn-pc { background-color: #00b4d8; color: #121214; }
+        .btn-android { background-color: #38b000; color: #ffffff; }
+        .btn-mod { background-color: #7209b7; color: #ffffff; }
+        .btn-youtube { background-color: #ff0000; color: #ffffff; }
 
-        .btn-android {
-            background-color: #38b000;
-            color: #ffffff;
-        }
-
-        .btn-mod {
-            background-color: #7209b7;
-            color: #ffffff;
-        }
-
-        .btn-youtube {
-            background-color: #ff0000;
-            color: #ffffff;
-        }
-
-        /* MODAL AMARILLO PERSONALIZADO DE ADVERTENCIA */
+        /* MODALES */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -357,14 +394,14 @@
 
         .modal-box {
             position: relative;
-            background-color: #2a2212;
-            border: 2px solid #ffb703;
+            background-color: #202024;
+            border: 2px solid #00b4d8;
             border-radius: 12px;
             padding: 25px 30px;
             max-width: 520px;
             width: 90%;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(255, 183, 3, 0.3);
+            text-align: left;
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.3);
             transform: scale(0.8);
             transition: transform 0.3s ease;
         }
@@ -374,11 +411,11 @@
         }
 
         .modal-title {
-            color: #ffb703;
+            color: #00b4d8;
             font-size: 1.8rem;
             margin-bottom: 15px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
+            text-align: center;
         }
 
         .modal-text {
@@ -388,18 +425,15 @@
             margin-bottom: 12px;
         }
 
-        .modal-question {
-            color: #ffb703;
-            font-size: 1.05rem;
-            font-weight: 600;
-            margin-top: 15px;
-            margin-bottom: 25px;
+        body.light-mode .modal-text {
+            color: #222222;
         }
 
         .modal-buttons {
             display: flex;
             justify-content: center;
             gap: 15px;
+            margin-top: 20px;
         }
 
         .modal-btn {
@@ -418,17 +452,36 @@
             transform: scale(1.05);
         }
 
-        .btn-confirm {
-            background-color: #38b000;
-            color: #ffffff;
+        .btn-confirm { background-color: #38b000; color: #ffffff; }
+        .btn-cancel { background-color: #e63946; color: #ffffff; }
+
+        .config-group {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .btn-cancel {
-            background-color: #e63946;
-            color: #ffffff;
+        .config-group label {
+            font-weight: bold;
+            color: #00b4d8;
         }
 
-        /* Adaptabilidad para pantallas pequeñas */
+        .config-group select {
+            padding: 8px;
+            border-radius: 6px;
+            background: #2a2a30;
+            color: #fff;
+            border: 1px solid #3a3a45;
+            outline: none;
+        }
+
+        body.light-mode .config-group select {
+            background: #f9f9f9;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
         @media (max-width: 980px) {
             .main-layout {
                 flex-direction: column-reverse;
@@ -443,359 +496,514 @@
 <body>
 
     <header>
-        <!-- GIF de título alineado a la izquierda -->
+        <!-- GIF de título dinámico -->
         <div class="header-logo">
-            <img src="otros/titulo.gif" alt="Juegos Gratis por Matateo">
+            <img id="headerTitleImg" src="otros/titulo.gif" alt="Juegos Gratis por Matateo">
         </div>
 
-        <!-- Barra y botón de búsqueda alineados a la derecha -->
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Buscar juego...">
-            <button class="search-btn" id="searchBtn">🔍 Buscar</button>
+        <div class="header-right-controls">
+            <button id="configBtn" class="config-btn">
+                ⚙️ <span data-translate="config_btn">Configuración</span>
+            </button>
+            <div class="search-container">
+                <input type="text" id="searchInput" data-translate-placeholder="search_placeholder" placeholder="Buscar juego...">
+                <button class="search-btn" id="searchBtn"><span data-translate="search_btn">🔍 Buscar</span></button>
+            </div>
         </div>
     </header>
 
-    <!-- Caja de advertencia general con botón de salida -->
+    <!-- Aviso general -->
     <div class="warning-banner" id="warningBanner">
         <button class="close-btn-left" id="closeBannerBtn" aria-label="Cerrar advertencia">✖</button>
-        <span>⚠️ ¡ADVERTENCIA!</span> Estos juegos los saco de servidores y páginas 100% confiables, y los he probado y no me ha pasado nadita. Por eso tienen diferentes nombres, ten un buen día.
+        <span data-translate="warning_title">⚠️ ¡ADVERTENCIA!</span> <span data-translate="warning_text">Estos juegos los saco de servidores y páginas 100% confiables, y los he probado y no me ha pasado nadita. Por eso tienen diferentes nombres, ten un buen día.</span>
     </div>
 
-    <!-- ESTRUCTURA PRINCIPAL LAYOUT -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <div class="main-layout">
         
-        <!-- SECCIÓN IZQUIERDA: TODOS LOS JUEGOS (ORDENADOS ALFABÉTICAMENTE A-Z) -->
+        <!-- JUEGOS -->
         <main class="left-content">
             <div class="game-grid" id="gameGrid">
 
-                <!-- 1. BALATRO -->
+                <!-- Balatro -->
                 <div class="game-card">
                     <img src="portadas/balatro.png" alt="Balatro" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Balatro</h3>
-                        <p class="game-details">📦 Peso PC: ~102.8 MB</p>
-                        <p class="game-details">📦 Peso Android: ~62.92 MB</p>
-                        <p class="game-details">🎮 Género: Roguelike / Cartas / Indieware</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~102.8 MB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~62.92 MB</p>
+                        <p class="game-details" data-translate="genre_balatro">🎮 Género: Roguelike / Cartas / Indieware</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://megadb.net/z4u1c9cgnyhm">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/tyvtrz28jn7hxgz/balatro+v1.7+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://megadb.net/z4u1c9cgnyhm"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/tyvtrz28jn7hxgz/balatro+v1.7+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-                <!-- 2. CELESTE -->
+                <!-- Celeste -->
                 <div class="game-card">
                     <img src="portadas/celeste.png" alt="Celeste" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Celeste</h3>
-                        <p class="game-details">📦 Peso PC: ~2.5 GB</p>
-                        <p class="game-details">🎮 Género: Plataformas / Precisión / Aventura</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~2.5 GB</p>
+                        <p class="game-details" data-translate="genre_celeste">🎮 Género: Plataformas / Precisión / Aventura</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://gofile.io/d/OQEUes">💻 Descargar para PC</button>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://gofile.io/d/OQEUes"><span data-translate="download_pc">💻 Descargar para PC</span></button>
                     </div>
                 </div>
 
-                <!-- 3. COUNTER-STRIKE 1.6 -->
+                <!-- Counter-Strike 1.6 -->
                 <div class="game-card">
                     <img src="portadas/cs16.png" alt="Counter-Strike 1.6" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Counter-Strike 1.6</h3>
-                        <p class="game-details">📦 Formato: Instalador EXE</p>
-                        <p class="game-details">📦 Peso PC: ~260 MB</p>
-                        <p class="game-details">🎮 Género: Shooter / FPS / Acción</p>
+                        <p class="game-details" data-translate="format_exe">📦 Formato: Instalador EXE</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~260 MB</p>
+                        <p class="game-details" data-translate="genre_cs16">🎮 Género: Shooter / FPS / Acción</p>
                     </div>
                     <div class="download-container">
-                        <a href="https://nextclient.ru" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">💻 Instalador (no virus)</a>
-                        <a href="https://youtu.be/YUlI5y33PIw?si=TLoQQc_1s2_d0sv2" target="_blank" rel="noopener noreferrer" class="download-btn btn-youtube">▶️ Video de YouTube (video no mío)</a>
+                        <a href="https://nextclient.ru" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc"><span data-translate="installer_pc">💻 Instalador (no virus)</span></a>
+                        <a href="https://youtu.be/YUlI5y33PIw?si=TLoQQc_1s2_d0sv2" target="_blank" rel="noopener noreferrer" class="download-btn btn-youtube"><span data-translate="youtube_video">▶️ Video de YouTube (video no mío)</span></a>
                     </div>
                 </div>
 
-                <!-- 4. CUPHEAD -->
+                <!-- Cuphead -->
                 <div class="game-card">
                     <img src="portadas/cuphead.png" alt="Cuphead + DLC" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Cuphead + The Delicious Last Course</h3>
-                        <p class="game-details">📦 Peso PC: ~4.46 GB</p>
-                        <p class="game-details">📦 Peso Android: ~2.25 GB</p>
-                        <p class="game-details">🎮 Género: Acción / Plataformas</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~4.46 GB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~2.25 GB</p>
+                        <p class="game-details" data-translate="genre_cuphead">🎮 Género: Acción / Plataformas</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/xymvjgi8eti16ht/Cuphead_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/f3oodz5wp9gvrcy/cuphead_170b4.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/xymvjgi8eti16ht/Cuphead_ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/f3oodz5wp9gvrcy/cuphead_170b4.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-                <!-- 5. GEOMETRY DASH -->
+                <!-- Geometry Dash -->
                 <div class="game-card">
                     <img src="portadas/geometrydash.png" alt="Geometry Dash" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Geometry Dash</h3>
-                        <p class="game-details">📦 Peso PC: ~273.11 MB</p>
-                        <p class="game-details">📦 Peso Android: ~171.97 MB</p>
-                        <p class="game-details">🎮 Género: Plataformas / Rhythm</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~273.11 MB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~171.97 MB</p>
+                        <p class="game-details" data-translate="genre_gd">🎮 Género: Plataformas / Rhythm</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/fwtyq3xfi3mzz6y/Geometry+Dash+Por+Juegos+Matateo+(mentira+se+los+robo+al+enemigos).rar/file">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/55phkseylizs8tf/Geo-Dash-v2.2.144-Full-ByBob.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
-                        <a href="https://www.mediafire.com/file/nsfaqr1ofrprff9/Geometry+dash+todo+desbloqueado+apk+por+juegos+matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod">🔓 Descargar APK Mod (Todo Desbloqueado)</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/fwtyq3xfi3mzz6y/Geometry+Dash+Por+Juegos+Matateo+(mentira+se+los+robo+al+enemigos).rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/55phkseylizs8tf/Geo-Dash-v2.2.144-Full-ByBob.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
+                        <a href="https://www.mediafire.com/file/nsfaqr1ofrprff9/Geometry+dash+todo+desbloqueado+apk+por+juegos+matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod"><span data-translate="download_mod">🔓 Descargar APK Mod (Todo Desbloqueado)</span></a>
                     </div>
                 </div>
 
-                <!-- 6. HOLLOW KNIGHT -->
+                <!-- Hollow Knight -->
                 <div class="game-card">
                     <img src="portadas/hollowknight.png" alt="Hollow Knight" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Hollow Knight</h3>
-                        <p class="game-details">📦 Peso PC: ~1.05 GB</p>
-                        <p class="game-details">📦 Peso Android: ~931 MB</p>
-                        <p class="game-details">🎮 Género: Metroidvania / Acción</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~1.05 GB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~931 MB</p>
+                        <p class="game-details" data-translate="genre_hk">🎮 Género: Metroidvania / Acción</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                        <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-                <!-- 7. PLANTS VS ZOMBIES -->
+                <!-- Plants vs Zombies -->
                 <div class="game-card">
                     <img src="portadas/pvz.png" alt="Plants vs Zombies" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Plants vs. Zombies</h3>
-                        <p class="game-details">📦 Peso PC: ~246.96 MB</p>
-                        <p class="game-details">🎮 Género: Estrategia / Tower Defense</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~246.96 MB</p>
+                        <p class="game-details" data-translate="genre_pvz">🎮 Género: Estrategia / Tower Defense</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pvz-trigger" data-link="https://www.mediafire.com/file/3o4ca4f8xyu7ea0/PVZ+Ultimate+por+juegos+matateo.rar/file">💻 Descargar para PC</button>
+                        <button class="download-btn btn-pc btn-pvz-trigger" data-link="https://www.mediafire.com/file/3o4ca4f8xyu7ea0/PVZ+Ultimate+por+juegos+matateo.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
                     </div>
                 </div>
 
-                <!-- 8. SUBNAUTICA -->
+                <!-- Subnautica -->
                 <div class="game-card">
                     <img src="portadas/subnautica.png" alt="Subnautica" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Subnautica</h3>
-                        <p class="game-details">📦 Peso PC: ~3.7 GB</p>
-                        <p class="game-details">📦 Peso Android: ~2.1 GB</p>
-                        <p class="game-details">🎮 Género: Supervivencia / Mundo Abierto / Aventura</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~3.7 GB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~2.1 GB</p>
+                        <p class="game-details" data-translate="genre_subnautica">🎮 Género: Supervivencia / Mundo Abierto / Aventura</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://gofile.io/d/XXUKgO">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/ae2r1z0vad8mb2q/subnautica+v1.22.83416+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://gofile.io/d/XXUKgO"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/ae2r1z0vad8mb2q/subnautica+v1.22.83416+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-                <!-- 9. SUPER MEAT BOY -->
+                <!-- Super Meat Boy -->
                 <div class="game-card">
                     <img src="portadas/supermeatboy.png" alt="Super Meat Boy" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Super Meat Boy</h3>
-                        <p class="game-details">📦 Peso PC: ~300 MB</p>
-                        <p class="game-details">📦 Peso Android: ~120 MB</p>
-                        <p class="game-details">🎮 Género: Plataformas / Precisión / Indie</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~300 MB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~120 MB</p>
+                        <p class="game-details" data-translate="genre_smb">🎮 Género: Plataformas / Precisión / Indie</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://megadb.net/xry7ffjnvh8s">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/pzq9shzk0zrvy4w/Super+Meat+Boy+Forever+v6755.1849.1962.152+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://megadb.net/xry7ffjnvh8s"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/pzq9shzk0zrvy4w/Super+Meat+Boy+Forever+v6755.1849.1962.152+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-                <!-- 10. UNDERTALE -->
+                <!-- Undertale -->
                 <div class="game-card">
                     <img src="portadas/undertale.png" alt="Undertale" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Undertale</h3>
-                        <p class="game-details">📦 Peso PC: ~135.38 MB</p>
-                        <p class="game-details">📦 Peso Android: ~174.12 MB</p>
-                        <p class="game-details">🎮 Género: RPG / Indie</p>
+                        <p class="game-details">📦 <span data-translate="pc_weight">Peso PC</span>: ~135.38 MB</p>
+                        <p class="game-details">📦 <span data-translate="android_weight">Peso Android</span>: ~174.12 MB</p>
+                        <p class="game-details" data-translate="genre_undertale">🎮 Género: RPG / Indie</p>
                     </div>
                     <div class="download-container">
-                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                        <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file"><span data-translate="download_pc">💻 Descargar para PC</span></button>
+                        <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android"><span data-translate="download_android">📱 Descargar para Android</span></a>
                     </div>
                 </div>
 
-            </div> <!-- FIN DE LA CUADRÍCULA -->
+            </div>
         </main>
 
-        <!-- SECCIÓN DERECHA: PANEL JUEGO DEL DÍA -->
+        <!-- JUEGO DEL DÍA -->
         <aside class="right-sidebar">
             <div class="daily-game-box">
-                <div class="daily-badge">🌟 JUEGO DEL DÍA 🌟</div>
-                <div class="daily-timer" id="dailyTimer">⏱️ Se actualiza en: --h --m</div>
-                <div id="dailyGameContainer">
-                    <!-- Carga dinámicamente con JavaScript -->
-                </div>
+                <div class="daily-badge" data-translate="daily_badge">🌟 JUEGO DEL DÍA 🌟</div>
+                <div class="daily-timer" id="dailyTimer">⏱️ <span data-translate="updates_in">Se actualiza en</span>: <span id="timerCountdown">00h 00m 00s</span></div>
+                <div id="dailyGameContainer"></div>
             </div>
         </aside>
 
     </div>
 
-    <!-- MODAL 1: ADVERTENCIA GENERAL DE CONTRASEÑA PARA JUEGOS DE PC -->
-    <div class="modal-overlay" id="pcModal">
+    <!-- MODAL DE CONFIGURACIÓN -->
+    <div class="modal-overlay" id="configModal">
         <div class="modal-box">
-            <button class="close-btn-left close-pc-modal" aria-label="Cerrar modal">✖</button>
-            <h2 class="modal-title">¡ADVERTENCIA!</h2>
-            <p class="modal-text">Si tiene alguna palabra relacionada con <b>El enemigos</b> en el nombre del archivo, la contraseña va a ser <b>elenemigos.com</b></p>
+            <h2 class="modal-title" data-translate="config_title">⚙️ Configuración</h2>
+            
+            <div class="config-group">
+                <label for="langSelect" data-translate="label_lang">Idioma / Language:</label>
+                <select id="langSelect">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+
+            <div class="config-group">
+                <label for="themeSelect" data-translate="label_theme">Tema visual:</label>
+                <select id="themeSelect">
+                    <option value="dark" data-translate="theme_dark">Oscuro (Gamer)</option>
+                    <option value="light" data-translate="theme_light">Claro</option>
+                </select>
+            </div>
+
             <div class="modal-buttons">
-                <a href="#" id="pcConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm">ok</a>
+                <button class="modal-btn btn-cancel" id="closeConfigModalBtn" data-translate="btn_close">Cerrar</button>
+                <button class="modal-btn btn-confirm" id="saveConfigBtn" data-translate="btn_save">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: ADVERTENCIA INTEGRADA DE PVZ -->
-    <div class="modal-overlay" id="pvzModal">
-        <div class="modal-box">
-            <button class="close-btn-left close-pvz-modal" aria-label="Cerrar modal">✖</button>
-            <h2 class="modal-title">¡ADVERTENCIA!</h2>
-            <p class="modal-text">Este juego es una versión mejorada, no es el Game Of the year edition. NI PVZ REPLANTED.</p>
-            <p class="modal-question">¿Estás seguro que quieres descargar?</p>
+    <!-- MODAL PC -->
+    <div class="modal-overlay" id="pcModal">
+        <div class="modal-box" style="text-align: center;">
+            <button class="close-btn-left close-pc-modal" aria-label="Cerrar modal">✖</button>
+            <h2 class="modal-title" data-translate="warning_header">¡ADVERTENCIA!</h2>
+            <p class="modal-text" style="text-align: center;" data-translate="pc_warning_text">Si tiene alguna palabra relacionada con <b>El enemigos</b> en el nombre del archivo, la contraseña va a ser <b>elenemigos.com</b></p>
             <div class="modal-buttons">
-                <a href="#" id="modalConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm">Sí, descargar</a>
-                <button id="modalCancelBtn" class="modal-btn btn-cancel">No, cancelar</button>
+                <a href="#" id="pcConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm">OK</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PVZ -->
+    <div class="modal-overlay" id="pvzModal">
+        <div class="modal-box" style="text-align: center;">
+            <button class="close-btn-left close-pvz-modal" aria-label="Cerrar modal">✖</button>
+            <h2 class="modal-title" data-translate="warning_header">¡ADVERTENCIA!</h2>
+            <p class="modal-text" style="text-align: center;" data-translate="pvz_warning_text">Este juego es una versión mejorada, no es el Game Of the year edition. NI PVZ REPLANTED.</p>
+            <p class="modal-question" style="color: #00b4d8;" data-translate="pvz_question">¿Estás seguro que quieres descargar?</p>
+            <div class="modal-buttons">
+                <a href="#" id="modalConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm" data-translate="yes_download">Sí, descargar</a>
+                <button id="modalCancelBtn" class="modal-btn btn-cancel" data-translate="no_cancel">No, cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- LÓGICA DE CIERRE BANNER SUPERIOR ---
-        const closeBannerBtn = document.getElementById('closeBannerBtn');
-        const warningBanner = document.getElementById('warningBanner');
+        // --- DICCIONARIO DE IDIOMAS ---
+        const translations = {
+            es: {
+                page_title: "Colección De Juegos Gratis De Matateo - PC & Android",
+                config_btn: "Configuración",
+                search_placeholder: "Buscar juego...",
+                search_btn: "🔍 Buscar",
+                warning_title: "⚠️ ¡ADVERTENCIA!",
+                warning_text: "Estos juegos los saco de servidores y páginas 100% confiables, y los he probado y no me ha pasado nadita. Por eso tienen diferentes nombres, ten un buen día.",
+                daily_badge: "🌟 JUEGO DEL DÍA 🌟",
+                updates_in: "Se actualiza en",
+                config_title: "⚙️ Configuración",
+                label_lang: "Idioma / Language:",
+                label_theme: "Tema visual:",
+                theme_dark: "Oscuro (Gamer)",
+                theme_light: "Claro",
+                btn_close: "Cerrar",
+                btn_save: "Guardar Cambios",
+                warning_header: "¡ADVERTENCIA!",
+                pc_warning_text: "Si tiene alguna palabra relacionada con <b>El enemigos</b> en el nombre del archivo, la contraseña va a ser <b>elenemigos.com</b>",
+                pvz_warning_text: "Este juego es una versión mejorada, no es el Game Of the year edition. NI PVZ REPLANTED.",
+                pvz_question: "¿Estás seguro que quieres descargar?",
+                yes_download: "Sí, descargar",
+                no_cancel: "No, cancelar",
+                download_pc: "💻 Descargar para PC",
+                download_android: "📱 Descargar para Android",
+                download_mod: "🔓 Descargar APK Mod (Todo Desbloqueado)",
+                installer_pc: "💻 Instalador (no virus)",
+                youtube_video: "▶️ Video de YouTube (video no mío)",
+                format_exe: "📦 Formato: Instalador EXE",
+                pc_weight: "Peso PC",
+                android_weight: "Peso Android",
+                genre_balatro: "🎮 Género: Roguelike / Cartas / Indieware",
+                genre_celeste: "🎮 Género: Plataformas / Precisión / Aventura",
+                genre_cs16: "🎮 Género: Shooter / FPS / Acción",
+                genre_cuphead: "🎮 Género: Acción / Plataformas",
+                genre_gd: "🎮 Género: Plataformas / Rhythm",
+                genre_hk: "🎮 Género: Metroidvania / Acción",
+                genre_pvz: "🎮 Género: Estrategia / Tower Defense",
+                genre_subnautica: "🎮 Género: Supervivencia / Mundo Abierto / Aventura",
+                genre_smb: "🎮 Género: Plataformas / Precisión / Indie",
+                genre_undertale: "🎮 Género: RPG / Indie"
+            },
+            en: {
+                page_title: "Matateo's Free Games Collection - PC & Android",
+                config_btn: "Settings",
+                search_placeholder: "Search game...",
+                search_btn: "🔍 Search",
+                warning_title: "⚠️ WARNING!",
+                warning_text: "I get these games from 100% reliable servers and pages, I've tested them and nothing has ever happened to me. That's why they have different names, have a nice day.",
+                daily_badge: "🌟 GAME OF THE DAY 🌟",
+                updates_in: "Updates in",
+                config_title: "⚙️ Settings",
+                label_lang: "Language / Idioma:",
+                label_theme: "Visual Theme:",
+                theme_dark: "Dark (Gamer)",
+                theme_light: "Light",
+                btn_close: "Close",
+                btn_save: "Save Changes",
+                warning_header: "WARNING!",
+                pc_warning_text: "If the file name contains any word related to <b>El enemigos</b>, the password will be <b>elenemigos.com</b>",
+                pvz_warning_text: "This game is an improved version, it is NOT the Game of the Year edition, nor PVZ Replanted.",
+                pvz_question: "Are you sure you want to download?",
+                yes_download: "Yes, download",
+                no_cancel: "No, cancel",
+                download_pc: "💻 Download for PC",
+                download_android: "📱 Download for Android",
+                download_mod: "🔓 Download Mod APK (All Unlocked)",
+                installer_pc: "💻 Installer (no virus)",
+                youtube_video: "▶️ YouTube video (not mine)",
+                format_exe: "📦 Format: EXE Installer",
+                pc_weight: "PC Weight",
+                android_weight: "Android Weight",
+                genre_balatro: "🎮 Genre: Roguelike / Cards / Indieware",
+                genre_celeste: "🎮 Genre: Platformer / Precision / Adventure",
+                genre_cs16: "🎮 Genre: Shooter / FPS / Action",
+                genre_cuphead: "🎮 Genre: Action / Platformer",
+                genre_gd: "🎮 Genre: Platformer / Rhythm",
+                genre_hk: "🎮 Genre: Metroidvania / Action",
+                genre_pvz: "🎮 Genre: Strategy / Tower Defense",
+                genre_subnautica: "🎮 Genre: Survival / Open World / Adventure",
+                genre_smb: "🎮 Genre: Platformer / Precision / Indie",
+                genre_undertale: "🎮 Genre: RPG / Indie"
+            }
+        };
 
-        if (closeBannerBtn && warningBanner) {
-            closeBannerBtn.addEventListener('click', function() {
-                warningBanner.style.display = 'none';
+        // --- LÓGICA DE TRADUCCIÓN Y CONFIGURACIÓN ---
+        const langSelect = document.getElementById('langSelect');
+        const themeSelect = document.getElementById('themeSelect');
+        const configModal = document.getElementById('configModal');
+        const configBtn = document.getElementById('configBtn');
+        const closeConfigModalBtn = document.getElementById('closeConfigModalBtn');
+        const saveConfigBtn = document.getElementById('saveConfigBtn');
+        const headerTitleImg = document.getElementById('headerTitleImg');
+
+        function applyLanguage(lang) {
+            const texts = translations[lang];
+            if (!texts) return;
+
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (texts[key]) {
+                    el.innerHTML = texts[key];
+                }
             });
+
+            document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-translate-placeholder');
+                if (texts[key]) {
+                    el.placeholder = texts[key];
+                }
+            });
+
+            // Cambiar imagen del título según el idioma
+            if (lang === 'en') {
+                headerTitleImg.src = 'otros/titulo_eng.gif';
+            } else {
+                headerTitleImg.src = 'otros/titulo.gif';
+            }
+
+            document.documentElement.lang = lang;
         }
 
-        // --- LÓGICA MODAL PVZ Y MODAL PC ---
-        const modal = document.getElementById('pvzModal');
-        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-        const modalCancelBtn = document.getElementById('modalCancelBtn');
-        const closePvzModalBtn = document.querySelector('.close-pvz-modal');
+        configBtn.addEventListener('click', () => configModal.classList.add('active'));
+        closeConfigModalBtn.addEventListener('click', () => configModal.classList.remove('active'));
 
-        const pcModal = document.getElementById('pcModal');
-        const pcConfirmBtn = document.getElementById('pcConfirmBtn');
-        const closePcModalBtn = document.querySelector('.close-pc-modal');
+        saveConfigBtn.addEventListener('click', () => {
+            const selectedLang = langSelect.value;
+            const selectedTheme = themeSelect.value;
 
-        // --- DELEGACIÓN DE EVENTOS PARA REUTILIZAR BOTONES DE MODAL EN EL JUEGO DEL DÍA ---
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-pvz-trigger')) {
-                const linkDescarga = e.target.getAttribute('data-link');
-                modalConfirmBtn.href = linkDescarga;
-                modal.classList.add('active');
+            applyLanguage(selectedLang);
+            localStorage.setItem('matateo_lang', selectedLang);
+
+            if (selectedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('matateo_theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('matateo_theme', 'dark');
             }
+
+            configModal.classList.remove('active');
+        });
+
+        // Cargar preferencias guardadas al iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('matateo_lang') || 'es';
+            const savedTheme = localStorage.getItem('matateo_theme') || 'dark';
+
+            langSelect.value = savedLang;
+            themeSelect.value = savedTheme;
+
+            applyLanguage(savedLang);
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        });
+
+        // --- JUEGO DEL DÍA ---
+        const games = Array.from(document.querySelectorAll('.game-card'));
+        function setDailyGame() {
+            if (games.length === 0) return;
+            const today = new Date().toDateString();
+            let seed = 0;
+            for (let i = 0; i < today.length; i++) {
+                seed += today.charCodeAt(i);
+            }
+            const index = seed % games.length;
+            const dailyContainer = document.getElementById('dailyGameContainer');
+            dailyContainer.innerHTML = '';
+            const clone = games[index].cloneNode(true);
+            dailyContainer.appendChild(clone);
+        }
+        setDailyGame();
+
+        // --- TEMPORIZADOR DEL JUEGO DEL DÍA (HORAS, MINUTOS Y SEGUNDOS) ---
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = tomorrow - now;
             
-            if (e.target.classList.contains('btn-pc-modal')) {
-                const linkDescarga = e.target.getAttribute('data-link');
-                pcConfirmBtn.href = linkDescarga;
-                pcModal.classList.add('active');
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Formatear para que siempre tengan 2 dígitos (ej: 05h 09m 03s)
+            const hStr = String(hours).padStart(2, '0');
+            const mStr = String(minutes).padStart(2, '0');
+            const sStr = String(seconds).padStart(2, '0');
+
+            const countdownEl = document.getElementById('timerCountdown');
+            if (countdownEl) {
+                countdownEl.textContent = `${hStr}h ${mStr}m ${sStr}s`;
             }
-        });
-
-        // Eventos Modal PVZ
-        if (closePvzModalBtn) {
-            closePvzModalBtn.addEventListener('click', function() {
-                modal.classList.remove('active');
-            });
         }
+        setInterval(updateTimer, 1000);
+        updateTimer();
 
-        if (modalCancelBtn) {
-            modalCancelBtn.addEventListener('click', function() {
-                modal.classList.remove('active');
-            });
-        }
-
-        if (modalConfirmBtn) {
-            modalConfirmBtn.addEventListener('click', function() {
-                modal.classList.remove('active');
-            });
-        }
-
-        // Eventos Modal PC
-        if (closePcModalBtn) {
-            closePcModalBtn.addEventListener('click', function() {
-                pcModal.classList.remove('active');
-            });
-        }
-
-        if (pcConfirmBtn) {
-            pcConfirmBtn.addEventListener('click', function() {
-                pcModal.classList.remove('active');
-            });
-        }
-
-        // Cerrar modales al hacer clic fuera del cuadro
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-            if (e.target === pcModal) {
-                pcModal.classList.remove('active');
-            }
-        });
-
-        // --- LÓGICA BÚSQUEDA EN TIEMPO REAL ---
+        // --- BUSCADOR ---
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
-        const gameCards = document.querySelectorAll('.left-content .game-card');
 
         function filterGames() {
             const query = searchInput.value.toLowerCase().trim();
-            gameCards.forEach(card => {
+            games.forEach(card => {
                 const title = card.querySelector('.game-title').textContent.toLowerCase();
                 if (title.includes(query)) {
-                    card.style.display = 'flex';
+                    card.style.display = '';
                 } else {
                     card.style.display = 'none';
                 }
             });
         }
 
-        if (searchInput) searchInput.addEventListener('input', filterGames);
-        if (searchBtn) searchBtn.addEventListener('click', filterGames);
+        searchInput.addEventListener('input', filterGames);
+        searchBtn.addEventListener('click', filterGames);
 
-        // --- LÓGICA JUEGO DEL DÍA (SE ACTUALIZA CADA 24 HORAS EN UTC) ---
-        function setupDailyGame() {
-            const allCards = document.querySelectorAll('.left-content .game-card');
-            if (allCards.length === 0) return;
-
-            const now = new Date();
-            const dateStr = now.getUTCFullYear() + '-' + (now.getUTCMonth() + 1) + '-' + now.getUTCDate();
-            
-            let hash = 0;
-            for (let i = 0; i < dateStr.length; i++) {
-                hash = dateStr.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const gameIndex = Math.abs(hash) % allCards.length;
-
-            const selectedGameCard = allCards[gameIndex].cloneNode(true);
-            
-            const container = document.getElementById('dailyGameContainer');
-            container.innerHTML = '';
-            container.appendChild(selectedGameCard);
-
-            function updateTimer() {
-                const nowTime = new Date();
-                const tomorrowUTC = new Date(Date.UTC(nowTime.getUTCFullYear(), nowTime.getUTCMonth(), nowTime.getUTCDate() + 1));
-                const diff = tomorrowUTC - nowTime;
-
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                const timerElement = document.getElementById('dailyTimer');
-                if (timerElement) {
-                    timerElement.textContent = `⏱️ Se actualiza en: ${hours}h ${minutes}m ${seconds}s`;
-                }
-            }
-
-            updateTimer();
-            setInterval(updateTimer, 1000);
+        // --- CERRAR AVISO ---
+        const warningBanner = document.getElementById('warningBanner');
+        const closeBannerBtn = document.getElementById('closeBannerBtn');
+        if (closeBannerBtn && warningBanner) {
+            closeBannerBtn.addEventListener('click', () => {
+                warningBanner.style.display = 'none';
+            });
         }
 
-        // Ejecutar al cargar la página
-        document.addEventListener('DOMContentLoaded', setupDailyGame);
+        // --- MODAL DE CONTRASEÑA PC ---
+        const pcModal = document.getElementById('pcModal');
+        const pcConfirmBtn = document.getElementById('pcConfirmBtn');
+        const closePcModal = document.querySelectorAll('.close-pc-modal');
+
+        document.querySelectorAll('.btn-pc-modal').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const link = btn.getAttribute('data-link');
+                pcConfirmBtn.setAttribute('href', link);
+                pcModal.classList.add('active');
+            });
+        });
+
+        closePcModal.forEach(b => {
+            b.addEventListener('click', () => pcModal.classList.remove('active'));
+        });
+
+        // --- MODAL PVZ ---
+        const pvzModal = document.getElementById('pvzModal');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const closePvzModal = document.querySelectorAll('.close-pvz-modal');
+
+        document.querySelectorAll('.btn-pvz-trigger').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const link = btn.getAttribute('data-link');
+                modalConfirmBtn.setAttribute('href', link);
+                pvzModal.classList.add('active');
+            });
+        });
+
+        modalCancelBtn.addEventListener('click', () => pvzModal.classList.remove('active'));
+        closePvzModal.forEach(b => {
+            b.addEventListener('click', () => pvzModal.classList.remove('active'));
+        });
     </script>
 </body>
 </html>
