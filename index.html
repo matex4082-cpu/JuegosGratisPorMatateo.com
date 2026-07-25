@@ -33,7 +33,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto 30px auto;
             padding: 10px 0;
             flex-wrap: wrap;
@@ -92,13 +92,13 @@
 
         /* Estilo para el aviso de advertencia general */
         .warning-banner {
-            position: relative; /* Necesario para posicionar el botón de cierre */
+            position: relative;
             background-color: #2a2212;
             border: 2px solid #ffb703;
             color: #ffb703;
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto 30px auto;
-            padding: 15px 20px 15px 45px; /* Padding izquierdo para dar espacio al botón */
+            padding: 15px 20px 15px 45px;
             border-radius: 8px;
             text-align: center;
             font-size: 1rem;
@@ -111,7 +111,6 @@
             font-size: 1.1rem;
         }
 
-        /* Botón de cierre genérico para esquina superior izquierda */
         .close-btn-left {
             position: absolute;
             top: 8px;
@@ -133,16 +132,117 @@
             transform: scale(1.1);
         }
 
-        /* Contenedor de la cuadrícula de juegos */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
+        /* CONTENEDOR PRINCIPAL LAYOUT (IZQUIERDA - DERECHA) */
+        .main-layout {
+            display: flex;
+            gap: 35px;
+            max-width: 1350px;
             margin: 0 auto 40px auto;
+            align-items: flex-start;
         }
 
-        /* Tarjeta individual de cada juego */
+        /* LADO IZQUIERDO: CUADRÍCULA DE JUEGOS */
+        .left-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* LADO DERECHO: JUEGO DEL DÍA (AMPLIADO) */
+        .right-sidebar {
+            width: 460px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+        }
+
+        .daily-game-box {
+            background: linear-gradient(145deg, #1f1d2b, #2a2238);
+            border: 4px solid #ffb703;
+            border-radius: 24px;
+            padding: 35px 28px;
+            box-shadow: 0 12px 45px rgba(255, 183, 3, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .daily-game-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 50px rgba(255, 183, 3, 0.5);
+        }
+
+        .daily-badge {
+            background-color: #ffb703;
+            color: #121214;
+            font-weight: 900;
+            font-size: 1.5rem;
+            padding: 14px 28px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 6px 20px rgba(255, 183, 3, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        .daily-timer {
+            font-size: 1.1rem;
+            color: #d1d1dd;
+            margin-bottom: 22px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 18px;
+            border-radius: 16px;
+            display: inline-block;
+            font-weight: 700;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+        }
+
+        /* PERSONALIZACIÓN DE LA TARJETA DENTRO DEL JUEGO DEL DÍA */
+        #dailyGameContainer .game-card {
+            background-color: #18181c;
+            border: 2px solid #323238;
+            border-radius: 16px;
+        }
+
+        #dailyGameContainer .game-img {
+            height: 240px;
+        }
+
+        #dailyGameContainer .game-title {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        #dailyGameContainer .game-details {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        #dailyGameContainer .download-container {
+            padding: 20px;
+            gap: 12px;
+        }
+
+        #dailyGameContainer .download-btn {
+            padding: 12px 15px;
+            font-size: 1.05rem;
+            border-radius: 8px;
+        }
+
+        /* Tarjeta individual de cada juego (Estándar para la lista) */
         .game-card {
             background-color: #202024;
             border-radius: 12px;
@@ -152,6 +252,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            text-align: left;
         }
 
         .game-card:hover {
@@ -255,7 +356,7 @@
         }
 
         .modal-box {
-            position: relative; /* Necesario para posicionar la 'X' superior izquierda */
+            position: relative;
             background-color: #2a2212;
             border: 2px solid #ffb703;
             border-radius: 12px;
@@ -326,6 +427,17 @@
             background-color: #e63946;
             color: #ffffff;
         }
+
+        /* Adaptabilidad para pantallas pequeñas */
+        @media (max-width: 980px) {
+            .main-layout {
+                flex-direction: column-reverse;
+            }
+            .right-sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
     </style>
 </head>
 <body>
@@ -349,100 +461,147 @@
         <span>⚠️ ¡ADVERTENCIA!</span> Estos juegos los saco de servidores y páginas 100% confiables, y los he probado y no me ha pasado nadita. Por eso tienen diferentes nombres, ten un buen día.
     </div>
 
-    <!-- INICIO DE LA CUADRÍCULA -->
-    <div class="game-grid" id="gameGrid">
+    <!-- ESTRUCTURA PRINCIPAL LAYOUT -->
+    <div class="main-layout">
+        
+        <!-- SECCIÓN IZQUIERDA: TODOS LOS JUEGOS -->
+        <main class="left-content">
+            <div class="game-grid" id="gameGrid">
 
-        <!-- CUPHEAD + DLC -->
-        <div class="game-card">
-            <img src="portadas/cuphead.png" alt="Cuphead + DLC" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Cuphead + The Delicious Last Course</h3>
-                <p class="game-details">📦 Peso PC: ~4.46 GB</p>
-                <p class="game-details">📦 Peso Android: ~2.25 GB</p>
-                <p class="game-details">🎮 Género: Acción / Plataformas</p>
-            </div>
-            <div class="download-container">
-                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/xymvjgi8eti16ht/Cuphead_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                <a href="https://www.mediafire.com/file/f3oodz5wp9gvrcy/cuphead_170b4.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
-            </div>
-        </div>
+                <!-- BALATRO -->
+                <div class="game-card">
+                    <img src="portadas/balatro.png" alt="Balatro" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Balatro</h3>
+                        <p class="game-details">📦 Peso PC: ~102.8 MB</p>
+                        <p class="game-details">📦 Peso Android: ~62.92 MB</p>
+                        <p class="game-details">🎮 Género: Roguelike / Cartas / Indieware</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://megadb.net/z4u1c9cgnyhm">💻 Descargar para PC</button>
+                        <a href="https://www.mediafire.com/file/tyvtrz28jn7hxgz/balatro+v1.7+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                    </div>
+                </div>
 
-        <!-- HOLLOW KNIGHT -->
-        <div class="game-card">
-            <img src="portadas/hollowknight.png" alt="Hollow Knight" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Hollow Knight</h3>
-                <p class="game-details">📦 Peso PC: ~1.05 GB</p>
-                <p class="game-details">📦 Peso Android: ~931 MB</p>
-                <p class="game-details">🎮 Género: Metroidvania / Acción</p>
-            </div>
-            <div class="download-container">
-                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
-            </div>
-        </div>
+                <!-- CUPHEAD + DLC -->
+                <div class="game-card">
+                    <img src="portadas/cuphead.png" alt="Cuphead + DLC" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Cuphead + The Delicious Last Course</h3>
+                        <p class="game-details">📦 Peso PC: ~4.46 GB</p>
+                        <p class="game-details">📦 Peso Android: ~2.25 GB</p>
+                        <p class="game-details">🎮 Género: Acción / Plataformas</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/xymvjgi8eti16ht/Cuphead_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                        <a href="https://www.mediafire.com/file/f3oodz5wp9gvrcy/cuphead_170b4.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                    </div>
+                </div>
 
-        <!-- UNDERTALE -->
-        <div class="game-card">
-            <img src="portadas/undertale.png" alt="Undertale" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Undertale</h3>
-                <p class="game-details">📦 Peso PC: ~135.38 MB</p>
-                <p class="game-details">📦 Peso Android: ~174.12 MB</p>
-                <p class="game-details">🎮 Género: RPG / Indie</p>
-            </div>
-            <div class="download-container">
-                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file">💻 Descargar para PC</button>
-                <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
-            </div>
-        </div>
+                <!-- HOLLOW KNIGHT -->
+                <div class="game-card">
+                    <img src="portadas/hollowknight.png" alt="Hollow Knight" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Hollow Knight</h3>
+                        <p class="game-details">📦 Peso PC: ~1.05 GB</p>
+                        <p class="game-details">📦 Peso Android: ~931 MB</p>
+                        <p class="game-details">🎮 Género: Metroidvania / Acción</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/oel068atfhv37wx/Hollow+Knight_b21656419_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                        <a href="https://drive.google.com/file/d/11n0JypQ9QJq93mldHcyb9LR7x1J9NWNJ/view" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                    </div>
+                </div>
 
-        <!-- PLANTS VS ZOMBIES -->
-        <div class="game-card">
-            <img src="portadas/pvz.png" alt="Plants vs Zombies" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Plants vs. Zombies</h3>
-                <p class="game-details">📦 Peso PC: ~246.96 MB</p>
-                <p class="game-details">🎮 Género: Estrategia / Tower Defense</p>
-            </div>
-            <div class="download-container">
-                <!-- Botón que activa el modal de advertencia exclusivo de PVZ -->
-                <button class="download-btn btn-pc" id="btn-pvz" data-link="https://www.mediafire.com/file/3o4ca4f8xyu7ea0/PVZ+Ultimate+por+juegos+matateo.rar/file">💻 Descargar para PC</button>
-            </div>
-        </div>
+                <!-- UNDERTALE -->
+                <div class="game-card">
+                    <img src="portadas/undertale.png" alt="Undertale" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Undertale</h3>
+                        <p class="game-details">📦 Peso PC: ~135.38 MB</p>
+                        <p class="game-details">📦 Peso Android: ~174.12 MB</p>
+                        <p class="game-details">🎮 Género: RPG / Indie</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/1bgfpacru46k5aw/Undertale_b4279148_ElEnemigos.rar/file">💻 Descargar para PC</button>
+                        <a href="https://www.mediafire.com/file/ld77la2dode5dwr/Undertale+Para+android+Juegos+Matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                    </div>
+                </div>
 
-        <!-- GEOMETRY DASH -->
-        <div class="game-card">
-            <img src="portadas/geometrydash.png" alt="Geometry Dash" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Geometry Dash</h3>
-                <p class="game-details">📦 Peso PC: ~273.11 MB</p>
-                <p class="game-details">📦 Peso Android: ~171.97 MB</p>
-                <p class="game-details">🎮 Género: Plataformas / Rhythm</p>
-            </div>
-            <div class="download-container">
-                <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/fwtyq3xfi3mzz6y/Geometry+Dash+Por+Juegos+Matateo+(mentira+se+los+robo+al+enemigos).rar/file">💻 Descargar para PC</button>
-                <a href="https://www.mediafire.com/file/55phkseylizs8tf/Geo-Dash-v2.2.144-Full-ByBob.apk/file" target="_blank" class="download-btn btn-android">📱 Descargar para Android</a>
-                <a href="https://www.mediafire.com/file/nsfaqr1ofrprff9/Geometry+dash+todo+desbloqueado+apk+por+juegos+matateo.apk/file" target="_blank" class="download-btn btn-mod">🔓 Descargar APK Mod (Todo Desbloqueado)</a>
-            </div>
-        </div>
+                <!-- SUBNAUTICA -->
+                <div class="game-card">
+                    <img src="portadas/subnautica.png" alt="Subnautica" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Subnautica</h3>
+                        <p class="game-details">📦 Peso PC: ~3.7 GB</p>
+                        <p class="game-details">📦 Peso Android: ~2.1 GB</p>
+                        <p class="game-details">🎮 Género: Supervivencia / Mundo Abierto / Aventura</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://gofile.io/d/XXUKgO">💻 Descargar para PC</button>
+                        <a href="https://www.mediafire.com/file/ae2r1z0vad8mb2q/subnautica+v1.22.83416+-+espacioapk.com.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                    </div>
+                </div>
 
-        <!-- COUNTER-STRIKE 1.6 -->
-        <div class="game-card">
-            <img src="portadas/cs16.png" alt="Counter-Strike 1.6" class="game-img">
-            <div class="game-info">
-                <h3 class="game-title">Counter-Strike 1.6</h3>
-                <p class="game-details">📦 Formato: Instalador EXE</p>
-                <p class="game-details">📦 Peso PC: ~260 MB</p>
-                <p class="game-details">🎮 Género: Shooter / FPS / Acción</p>
-            </div>
-            <div class="download-container">
-                <a href="https://nextclient.ru" target="_blank" class="download-btn btn-pc">💻 Instalador (no virus)</a>
-                <a href="https://youtu.be/YUlI5y33PIw?si=TLoQQc_1s2_d0sv2" target="_blank" class="download-btn btn-youtube">▶️ Video de YouTube (video no mío)</a>
-            </div>
-        </div>
+                <!-- PLANTS VS ZOMBIES -->
+                <div class="game-card">
+                    <img src="portadas/pvz.png" alt="Plants vs Zombies" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Plants vs. Zombies</h3>
+                        <p class="game-details">📦 Peso PC: ~246.96 MB</p>
+                        <p class="game-details">🎮 Género: Estrategia / Tower Defense</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pvz-trigger" data-link="https://www.mediafire.com/file/3o4ca4f8xyu7ea0/PVZ+Ultimate+por+juegos+matateo.rar/file">💻 Descargar para PC</button>
+                    </div>
+                </div>
 
-    </div> <!-- FIN DE LA CUADRÍCULA -->
+                <!-- GEOMETRY DASH -->
+                <div class="game-card">
+                    <img src="portadas/geometrydash.png" alt="Geometry Dash" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Geometry Dash</h3>
+                        <p class="game-details">📦 Peso PC: ~273.11 MB</p>
+                        <p class="game-details">📦 Peso Android: ~171.97 MB</p>
+                        <p class="game-details">🎮 Género: Plataformas / Rhythm</p>
+                    </div>
+                    <div class="download-container">
+                        <button class="download-btn btn-pc btn-pc-modal" data-link="https://www.mediafire.com/file/fwtyq3xfi3mzz6y/Geometry+Dash+Por+Juegos+Matateo+(mentira+se+los+robo+al+enemigos).rar/file">💻 Descargar para PC</button>
+                        <a href="https://www.mediafire.com/file/55phkseylizs8tf/Geo-Dash-v2.2.144-Full-ByBob.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>
+                        <a href="https://www.mediafire.com/file/nsfaqr1ofrprff9/Geometry+dash+todo+desbloqueado+apk+por+juegos+matateo.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod">🔓 Descargar APK Mod (Todo Desbloqueado)</a>
+                    </div>
+                </div>
+
+                <!-- COUNTER-STRIKE 1.6 -->
+                <div class="game-card">
+                    <img src="portadas/cs16.png" alt="Counter-Strike 1.6" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">Counter-Strike 1.6</h3>
+                        <p class="game-details">📦 Formato: Instalador EXE</p>
+                        <p class="game-details">📦 Peso PC: ~260 MB</p>
+                        <p class="game-details">🎮 Género: Shooter / FPS / Acción</p>
+                    </div>
+                    <div class="download-container">
+                        <a href="https://nextclient.ru" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">💻 Instalador (no virus)</a>
+                        <a href="https://youtu.be/YUlI5y33PIw?si=TLoQQc_1s2_d0sv2" target="_blank" rel="noopener noreferrer" class="download-btn btn-youtube">▶️ Video de YouTube (video no mío)</a>
+                    </div>
+                </div>
+
+            </div> <!-- FIN DE LA CUADRÍCULA -->
+        </main>
+
+        <!-- SECCIÓN DERECHA: PANEL JUEGO DEL DÍA -->
+        <aside class="right-sidebar">
+            <div class="daily-game-box">
+                <div class="daily-badge">🌟 JUEGO DEL DÍA 🌟</div>
+                <div class="daily-timer" id="dailyTimer">⏱️ Se actualiza en: --h --m</div>
+                <div id="dailyGameContainer">
+                    <!-- Carga dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </aside>
+
+    </div>
 
     <!-- MODAL 1: ADVERTENCIA GENERAL DE CONTRASEÑA PARA JUEGOS DE PC -->
     <div class="modal-overlay" id="pcModal">
@@ -451,7 +610,7 @@
             <h2 class="modal-title">¡ADVERTENCIA!</h2>
             <p class="modal-text">Si tiene alguna palabra relacionada con <b>El enemigos</b> en el nombre del archivo, la contraseña va a ser <b>elenemigos.com</b></p>
             <div class="modal-buttons">
-                <a href="#" id="pcConfirmBtn" target="_blank" class="modal-btn btn-confirm">ok</a>
+                <a href="#" id="pcConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm">ok</a>
             </div>
         </div>
     </div>
@@ -464,7 +623,7 @@
             <p class="modal-text">Este juego es una versión mejorada, no es el Game Of the year edition. NI PVZ REPLANTED.</p>
             <p class="modal-question">¿Estás seguro que quieres descargar?</p>
             <div class="modal-buttons">
-                <a href="#" id="modalConfirmBtn" target="_blank" class="modal-btn btn-confirm">Sí, descargar</a>
+                <a href="#" id="modalConfirmBtn" target="_blank" rel="noopener noreferrer" class="modal-btn btn-confirm">Sí, descargar</a>
                 <button id="modalCancelBtn" class="modal-btn btn-cancel">No, cancelar</button>
             </div>
         </div>
@@ -481,20 +640,26 @@
             });
         }
 
+        // --- DELEGACIÓN DE EVENTOS PARA REUTILIZAR BOTONES DE MODAL EN EL JUEGO DEL DÍA ---
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-pvz-trigger')) {
+                const linkDescarga = e.target.getAttribute('data-link');
+                modalConfirmBtn.href = linkDescarga;
+                modal.classList.add('active');
+            }
+            
+            if (e.target.classList.contains('btn-pc-modal')) {
+                const linkDescarga = e.target.getAttribute('data-link');
+                pcConfirmBtn.href = linkDescarga;
+                pcModal.classList.add('active');
+            }
+        });
+
         // --- LÓGICA MODAL PVZ ---
-        const btnPvz = document.getElementById('btn-pvz');
         const modal = document.getElementById('pvzModal');
         const modalConfirmBtn = document.getElementById('modalConfirmBtn');
         const modalCancelBtn = document.getElementById('modalCancelBtn');
         const closePvzModalBtn = document.querySelector('.close-pvz-modal');
-
-        if (btnPvz) {
-            btnPvz.addEventListener('click', function() {
-                const linkDescarga = this.getAttribute('data-link');
-                modalConfirmBtn.href = linkDescarga;
-                modal.classList.add('active');
-            });
-        }
 
         if (closePvzModalBtn) {
             closePvzModalBtn.addEventListener('click', function() {
@@ -513,16 +678,7 @@
         // --- LÓGICA MODAL CONTRASEÑA PC ---
         const pcModal = document.getElementById('pcModal');
         const pcConfirmBtn = document.getElementById('pcConfirmBtn');
-        const pcButtons = document.querySelectorAll('.btn-pc-modal');
         const closePcModalBtn = document.querySelector('.close-pc-modal');
-
-        pcButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const linkDescarga = this.getAttribute('data-link');
-                pcConfirmBtn.href = linkDescarga;
-                pcModal.classList.add('active');
-            });
-        });
 
         if (closePcModalBtn) {
             closePcModalBtn.addEventListener('click', function() {
@@ -547,7 +703,7 @@
         // --- LÓGICA BÚSQUEDA EN TIEMPO REAL ---
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
-        const gameCards = document.querySelectorAll('.game-card');
+        const gameCards = document.querySelectorAll('.left-content .game-card');
 
         function filterGames() {
             const query = searchInput.value.toLowerCase().trim();
@@ -563,6 +719,47 @@
 
         searchInput.addEventListener('input', filterGames);
         searchBtn.addEventListener('click', filterGames);
+
+        // --- LÓGICA JUEGO DEL DÍA (SE ACTUALIZA CADA 24 HORAS) ---
+        function setupDailyGame() {
+            const allCards = document.querySelectorAll('.left-content .game-card');
+            if (allCards.length === 0) return;
+
+            const now = new Date();
+            const dateStr = now.getUTCFullYear() + '-' + (now.getUTCMonth() + 1) + '-' + now.getUTCDate();
+            
+            let hash = 0;
+            for (let i = 0; i < dateStr.length; i++) {
+                hash = dateStr.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const gameIndex = Math.abs(hash) % allCards.length;
+
+            const selectedGameCard = allCards[gameIndex].cloneNode(true);
+            
+            const container = document.getElementById('dailyGameContainer');
+            container.innerHTML = '';
+            container.appendChild(selectedGameCard);
+
+            function updateTimer() {
+                const nowTime = new Date();
+                const tomorrowUTC = new Date(Date.UTC(nowTime.getUTCFullYear(), nowTime.getUTCMonth(), nowTime.getUTCDate() + 1));
+                const diffMs = tomorrowUTC - nowTime;
+
+                const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+                const timerElement = document.getElementById('dailyTimer');
+                if (timerElement) {
+                    timerElement.textContent = `⏱️ Nuevo juego en: ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        setupDailyGame();
     </script>
 
 </body>
