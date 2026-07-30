@@ -1105,5 +1105,598 @@
             b.addEventListener('click', () => pvzModal.classList.remove('active'));
         });
     </script>
+    <!-- BOTÓN FLOTANTE DE ADMIN (FIJO ESTÁTICO ABAJO, INMUNE AL MOUSE) -->
+<div style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: 9999; pointer-events: none; text-align: center; padding-bottom: 12px; transform: none !important; transition: none !important;">
+    <button id="floatingAdminBtn" style="pointer-events: auto; display: inline-block; background: transparent; color: rgba(255, 255, 255, 0.2); border: none; padding: 4px 12px; font-size: 0.75rem; font-weight: normal; cursor: pointer; transform: none !important; transition: none !important;">
+        ⚙️ Admin Panel
+    </button>
+</div>
+
+<!-- MODAL DE ADMINISTRACIÓN -->
+<div id="adminPanelModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center;">
+    <div style="background-color: #202024; border: 2px solid #7209b7; padding: 30px; border-radius: 12px; max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto; position: relative; color: #fff; box-shadow: 0 0 25px rgba(114, 9, 183, 0.4);">
+        <button id="closeAdminModal" style="position: absolute; top: 12px; right: 15px; background: none; border: none; color: #ffb703; font-size: 1.5rem; cursor: pointer; font-weight: bold;">✖</button>
+        <h2 id="adminModalTitle" style="color: #7209b7; margin-bottom: 20px; text-align: center; font-size: 1.8rem;">Panel de Matateo</h2>
+        
+        <!-- PESTAÑAS DE NAVEGACIÓN -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #323238; padding-bottom: 10px;">
+            <button type="button" id="tabGamesBtn" style="flex: 1; background: #7209b7; color: white; border: none; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer;">🎮 Juegos</button>
+            <button type="button" id="tabCollectionsBtn" style="flex: 1; background: #121214; color: #aaa; border: 1px solid #323238; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer;">📁 Colecciones</button>
+        </div>
+
+        <!-- SECCIÓN DE JUEGOS -->
+        <div id="sectionGames">
+            <div style="margin-bottom: 20px; background: #121214; padding: 15px; border-radius: 8px; border: 1px solid #323238;">
+                <h3 id="formSectionTitle" style="font-size: 1.1rem; margin-bottom: 10px; color: #00b4d8;">Agregar nuevo juego individual:</h3>
+                <form id="quickAddForm" style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="hidden" id="editIndex" value="-1">
+                    <input type="text" id="qaTitle" placeholder="Título del juego" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="qaGenre" placeholder="Género" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="qaImg" placeholder="Ruta de portada principal" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    
+                    <!-- CHECKBOXES Y PESOS -->
+                    <div style="display: flex; flex-direction: column; gap: 8px; background: #1a1a1f; padding: 10px; border-radius: 6px; border: 1px solid #323238; margin-top: 5px;">
+                        <!-- PC -->
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
+                            <input type="checkbox" id="qaHasPc" style="accent-color: #00b4d8; width: 16px; height: 16px;"> ¿Tiene opción de PC?
+                        </label>
+                        <input type="text" id="qaWeightPc" placeholder="Peso PC" style="padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+                        <input type="text" id="qaLinkPc" placeholder="Enlace de descarga PC" style="padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+
+                        <!-- ANDROID -->
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; margin-top: 5px;">
+                            <input type="checkbox" id="qaHasAndroid" style="accent-color: #38b000; width: 16px; height: 16px;"> ¿Tiene opción de Android?
+                        </label>
+                        <input type="text" id="qaWeightAndroid" placeholder="Peso Android" style="padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+                        <input type="text" id="qaLinkAndroid" placeholder="Enlace de descarga Android" style="padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+
+                        <!-- MOD APK -->
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; margin-top: 5px;">
+                            <input type="checkbox" id="qaHasMod" style="accent-color: #7209b7; width: 16px; height: 16px;"> ¿Tiene Mod APK?
+                        </label>
+                        <input type="text" id="qaLinkMod" placeholder="Enlace de descarga Mod APK" style="padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-top: 5px;">
+                        <button type="submit" id="saveGameBtn" style="flex: 1; background-color: #38b000; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;">Guardar juego</button>
+                        <button type="button" id="cancelEditBtn" style="display: none; background-color: #6c757d; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: #00b4d8;">Juegos guardados:</h3>
+                <div id="adminGamesList" style="display: flex; flex-direction: column; gap: 8px; max-height: 150px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE COLECCIONES -->
+        <div id="sectionCollections" style="display: none;">
+            <div style="margin-bottom: 20px; background: #121214; padding: 15px; border-radius: 8px; border: 1px solid #323238;">
+                <h3 id="formColTitle" style="font-size: 1.1rem; margin-bottom: 10px; color: #00b4d8;">Crear Nueva Colección:</h3>
+                <form id="collectionForm" style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="hidden" id="editColIndex" value="-1">
+                    <input type="text" id="colTitle" placeholder="Título de la Colección (ej: FNAF: Primera Colección)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="colGenre" placeholder="Género de la colección (ej: Terror / Survival Horror)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="colMainImg" placeholder="Ruta de la imagen completa superior (ej: portadas/fnaf_banner.png)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    
+                    <!-- GESTIÓN DE JUEGOS INTERNOS DE LA COLECCIÓN -->
+                    <div style="background: #1a1a1f; padding: 10px; border-radius: 6px; border: 1px solid #323238; margin-top: 5px;">
+                        <label style="font-size: 0.9rem; color: #00b4d8; font-weight: bold; display: block; margin-bottom: 8px;">Juegos incluidos en el modal (Usa + para agregar / - para quitar):</label>
+                        
+                        <div id="collectionSubgamesContainer" style="display: flex; flex-direction: column; gap: 6px; max-height: 140px; overflow-y: auto; margin-bottom: 8px;">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="newSubgameTitle" placeholder="Nombre del juego (ej: FNAF 1)" style="flex: 1; padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+                            <input type="text" id="newSubgameLink" placeholder="Enlace de descarga" style="flex: 1; padding: 6px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none; font-size: 0.85rem;">
+                            <button type="button" id="addSubgameBtn" style="background: #38b000; color: white; border: none; padding: 6px 12px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">+</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 8px; margin-top: 5px;">
+                        <button type="submit" id="saveColBtn" style="flex: 1; background-color: #38b000; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;">Guardar Colección</button>
+                        <button type="button" id="cancelColEditBtn" style="display: none; background-color: #6c757d; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: #00b4d8;">Colecciones guardadas:</h3>
+                <div id="adminCollectionsList" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL GLOBAL DINÁMICO PARA "VER JUEGOS DISPONIBLES" -->
+<div id="dynamicCollectionModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.85); z-index: 10001; justify-content: center; align-items: center;">
+    <div style="background-color: #18181c; border: 2px solid #00b4d8; padding: 30px; border-radius: 16px; max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto; position: relative; color: #fff; box-shadow: 0 0 30px rgba(0, 180, 216, 0.3); text-align: center;">
+        <button id="closeDynamicModal" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #ffb703; font-size: 1.5rem; cursor: pointer; font-weight: bold;">✖</button>
+        <h2 id="dynModalTitle" style="color: #00b4d8; margin-bottom: 10px; font-size: 1.6rem;">FNAF: Primera Colección</h2>
+        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 20px;">Selecciona el juego que deseas descargar:</p>
+        
+        <div id="dynModalButtonsList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <!-- Botones de descarga internos -->
+        </div>
+
+        <button id="closeDynBtn" style="background-color: #e63946; color: white; border: none; padding: 10px 30px; font-weight: bold; border-radius: 8px; cursor: pointer;">Cerrar</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const floatingBtn = document.getElementById('floatingAdminBtn');
+        const adminModal = document.getElementById('adminPanelModal');
+        const closeAdminModal = document.getElementById('closeAdminModal');
+        const gameGrid = document.querySelector('.game-grid') || document.getElementById('gameGrid');
+
+        const dynamicModal = document.getElementById('dynamicCollectionModal');
+        const closeDynamicModal = document.getElementById('closeDynamicModal');
+        const closeDynBtn = document.getElementById('closeDynBtn');
+        const dynModalTitle = document.getElementById('dynModalTitle');
+        const dynModalButtonsList = document.getElementById('dynModalButtonsList');
+
+        const tabGamesBtn = document.getElementById('tabGamesBtn');
+        const tabCollectionsBtn = document.getElementById('tabCollectionsBtn');
+        const sectionGames = document.getElementById('sectionGames');
+        const sectionCollections = document.getElementById('sectionCollections');
+
+        const quickAddForm = document.getElementById('quickAddForm');
+        const adminGamesList = document.getElementById('adminGamesList');
+        const editIndexInput = document.getElementById('editIndex');
+        const formSectionTitle = document.getElementById('formSectionTitle');
+        const saveGameBtn = document.getElementById('saveGameBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+        const collectionForm = document.getElementById('collectionForm');
+        const adminCollectionsList = document.getElementById('adminCollectionsList');
+        const editColIndexInput = document.getElementById('editColIndex');
+        const formColTitle = document.getElementById('formColTitle');
+        const saveColBtn = document.getElementById('saveColBtn');
+        const cancelColEditBtn = document.getElementById('cancelColEditBtn');
+
+        let currentCollectionSubgames = [];
+        const collectionSubgamesContainer = document.getElementById('collectionSubgamesContainer');
+        const newSubgameTitle = document.getElementById('newSubgameTitle');
+        const newSubgameLink = document.getElementById('newSubgameLink');
+        const addSubgameBtn = document.getElementById('addSubgameBtn');
+
+        const PASSWORD = "xd";
+
+        tabGamesBtn.addEventListener('click', () => {
+            tabGamesBtn.style.background = '#7209b7';
+            tabGamesBtn.style.color = 'white';
+            tabGamesBtn.style.border = 'none';
+            tabCollectionsBtn.style.background = '#121214';
+            tabCollectionsBtn.style.color = '#aaa';
+            tabCollectionsBtn.style.border = '1px solid #323238';
+            sectionGames.style.display = 'block';
+            sectionCollections.style.display = 'none';
+        });
+
+        tabCollectionsBtn.addEventListener('click', () => {
+            tabCollectionsBtn.style.background = '#7209b7';
+            tabCollectionsBtn.style.color = 'white';
+            tabCollectionsBtn.style.border = 'none';
+            tabGamesBtn.style.background = '#121214';
+            tabGamesBtn.style.color = '#aaa';
+            tabGamesBtn.style.border = '1px solid #323238';
+            sectionCollections.style.display = 'block';
+            sectionGames.style.display = 'none';
+            renderAdminCollections();
+        });
+
+        function renderSubgamesFormList() {
+            collectionSubgamesContainer.innerHTML = '';
+            if (currentCollectionSubgames.length === 0) {
+                collectionSubgamesContainer.innerHTML = '<p style="color: #777; font-size: 0.8rem; text-align: center;">No hay juegos añadidos a esta colección aún.</p>';
+                return;
+            }
+            currentCollectionSubgames.forEach((sub, idx) => {
+                const row = document.createElement('div');
+                row.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #202024; padding: 6px 8px; border-radius: 4px; font-size: 0.85rem;";
+                row.innerHTML = `
+                    <span style="color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px;">🎮 ${sub.title}</span>
+                    <button type="button" data-subindex="${idx}" class="remove-subgame-btn" style="background: #e63946; color: white; border: none; width: 22px; height: 22px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justifyContent: center;">-</button>
+                `;
+                collectionSubgamesContainer.appendChild(row);
+            });
+
+            document.querySelectorAll('.remove-subgame-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const sIdx = parseInt(e.target.getAttribute('data-subindex'));
+                    currentCollectionSubgames.splice(sIdx, 1);
+                    renderSubgamesFormList();
+                });
+            });
+        }
+
+        addSubgameBtn.addEventListener('click', () => {
+            const titleVal = newSubgameTitle.value.trim();
+            const linkVal = newSubgameLink.value.trim();
+            if (!titleVal) {
+                alert("Escribe el nombre del juego.");
+                return;
+            }
+            currentCollectionSubgames.push({ title: titleVal, link: linkVal });
+            newSubgameTitle.value = '';
+            newSubgameLink.value = '';
+            renderSubgamesFormList();
+        });
+
+        function renderAllContentOnGrid() {
+            if (!gameGrid) return;
+            
+            document.querySelectorAll('.custom-game-card, .custom-collection-card').forEach(card => card.remove());
+            
+            let collections = JSON.parse(localStorage.getItem('matateo_collections_single_img') || '[]');
+            collections.forEach((col, cIdx) => {
+                const card = document.createElement('div');
+                card.className = 'game-card custom-collection-card';
+                card.style.cssText = "background-color: #18181c; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #323238; box-shadow: 0 4px 12px rgba(0,0,0,0.5);";
+
+                let namesListText = col.subgames.map(s => s.title).join(', ');
+                if (namesListText.length > 50) namesListText = namesListText.substring(0, 47) + '...';
+
+                card.innerHTML = `
+                    <div style="width: 100%; height: 160px; background: #000;">
+                        <img src="${col.mainImg}" alt="${col.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1;">
+                        <h3 style="color: #fff; font-size: 1.3rem; margin: 0; font-weight: bold;">${col.title}</h3>
+                        <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.85rem; color: #bbb;">
+                            <p style="margin: 0;">📦 Incluye: ${namesListText || 'Sin juegos'}</p>
+                            <p style="margin: 0;">🎮 Género: ${col.genre}</p>
+                        </div>
+                        <div style="margin-top: auto; padding-top: 10px;">
+                            <button type="button" data-colindex="${cIdx}" class="open-col-modal-btn" style="width: 100%; background-color: #ff7700; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center;">📁 Ver Juegos Disponibles</button>
+                        </div>
+                    </div>
+                `;
+                gameGrid.appendChild(card);
+            });
+
+            document.querySelectorAll('.open-col-modal-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const cIdx = parseInt(e.target.getAttribute('data-colindex'));
+                    const col = collections[cIdx];
+                    
+                    dynModalTitle.textContent = col.title;
+                    dynModalButtonsList.innerHTML = '';
+
+                    if (col.subgames.length === 0) {
+                        dynModalButtonsList.innerHTML = '<p style="color: #888;">No hay juegos en esta colección.</p>';
+                    } else {
+                        col.subgames.forEach(sub => {
+                            const linkTag = document.createElement('a');
+                            linkTag.href = sub.link || '#';
+                            linkTag.target = '_blank';
+                            linkTag.rel = 'noopener noreferrer';
+                            linkTag.textContent = sub.title;
+                            linkTag.style.cssText = "display: block; background-color: #00b4d8; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; text-align: center; transition: background 0.2s;";
+                            linkTag.onmouseover = () => linkTag.style.background = '#0096b4';
+                            linkTag.onmouseout = () => linkTag.style.background = '#00b4d8';
+                            dynModalButtonsList.appendChild(linkTag);
+                        });
+                    }
+
+                    dynamicModal.style.display = 'flex';
+                });
+            });
+
+            let customGames = JSON.parse(localStorage.getItem('matateo_custom_games') || '[]');
+            customGames.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card custom-game-card';
+                
+                let detailsHTML = `<p class="game-details">🎮 Género: ${game.genre}</p>`;
+                let buttonsHTML = '';
+
+                if (game.hasPc && game.linkPc) {
+                    detailsHTML = `<p class="game-details">📦 Peso PC: ${game.weightPc || ''}</p>` + detailsHTML;
+                    buttonsHTML += `<a href="${game.linkPc}" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">💻 Descargar para PC</a>`;
+                }
+                if (game.hasAndroid && game.linkAndroid) {
+                    detailsHTML += `<p class="game-details">📦 Peso Android: ${game.weightAndroid || ''}</p>` + detailsHTML;
+                    buttonsHTML += `<a href="${game.linkAndroid}" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>`;
+                }
+                if (game.hasMod && game.linkMod) {
+                    buttonsHTML += `<a href="${game.linkMod}" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod">🔓 Descargar APK Mod</a>`;
+                }
+
+                card.innerHTML = `
+                    <img src="${game.img}" alt="${game.title}" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        ${detailsHTML}
+                    </div>
+                    <div class="download-container">
+                        ${buttonsHTML}
+                    </div>
+                `;
+                gameGrid.appendChild(card);
+            });
+        }
+
+        renderAllContentOnGrid();
+
+        [closeDynamicModal, closeDynBtn].forEach(el => {
+            if (el) {
+                el.addEventListener('click', () => {
+                    dynamicModal.style.display = 'none';
+                });
+            }
+        });
+
+        if (dynamicModal) {
+            dynamicModal.addEventListener('click', (e) => {
+                if (e.target === dynamicModal) {
+                    dynamicModal.style.display = 'none';
+                }
+            });
+        }
+
+        if (floatingBtn) {
+            floatingBtn.addEventListener('click', () => {
+                const ingreso = prompt("Contraseña de Administrador:");
+                if (ingreso === PASSWORD) {
+                    adminModal.style.display = 'flex';
+                    resetGameForm();
+                    renderAdminGames();
+                } else if (ingreso !== null) {
+                    alert("Contraseña incorrecta.");
+                }
+            });
+        }
+
+        if (closeAdminModal) {
+            closeAdminModal.addEventListener('click', () => {
+                adminModal.style.display = 'none';
+            });
+        }
+
+        if (adminModal) {
+            adminModal.addEventListener('click', (e) => {
+                if (e.target === adminModal) {
+                    adminModal.style.display = 'none';
+                }
+            });
+        }
+
+        quickAddForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const index = parseInt(editIndexInput.value);
+            const newGame = {
+                title: document.getElementById('qaTitle').value,
+                genre: document.getElementById('qaGenre').value,
+                img: document.getElementById('qaImg').value,
+                hasPc: document.getElementById('qaHasPc').checked,
+                weightPc: document.getElementById('qaWeightPc').value,
+                linkPc: document.getElementById('qaLinkPc').value,
+                hasAndroid: document.getElementById('qaHasAndroid').checked,
+                weightAndroid: document.getElementById('qaWeightAndroid').value,
+                linkAndroid: document.getElementById('qaLinkAndroid').value,
+                hasMod: document.getElementById('qaHasMod').checked,
+                linkMod: document.getElementById('qaLinkMod').value
+            };
+
+            let customGames = JSON.parse(localStorage.getItem('matateo_custom_games') || '[]');
+
+            if (index === -1) {
+                customGames.push(newGame);
+                alert("¡Juego guardado con éxito!");
+            } else {
+                customGames[index] = newGame;
+                alert("¡Juego actualizado con éxito!");
+                resetGameForm();
+            }
+
+            localStorage.setItem('matateo_custom_games', JSON.stringify(customGames));
+            quickAddForm.reset();
+            editIndexInput.value = "-1";
+            renderAdminGames();
+            renderAllContentOnGrid();
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            resetGameForm();
+            quickAddForm.reset();
+            editIndexInput.value = "-1";
+        });
+
+        function resetGameForm() {
+            formSectionTitle.textContent = "Agregar nuevo juego individual:";
+            saveGameBtn.textContent = "Guardar juego";
+            saveGameBtn.style.backgroundColor = "#38b000";
+            cancelEditBtn.style.display = "none";
+        }
+
+        function renderAdminGames() {
+            let customGames = JSON.parse(localStorage.getItem('matateo_custom_games') || '[]');
+            adminGamesList.innerHTML = '';
+            if (customGames.length === 0) {
+                adminGamesList.innerHTML = '<p style="color: #888; font-size: 0.9rem;">No hay juegos guardados.</p>';
+                return;
+            }
+            customGames.forEach((game, index) => {
+                const item = document.createElement('div');
+                item.style.display = 'flex';
+                item.style.justifyContent = 'space-between';
+                item.style.alignItems = 'center';
+                item.style.background = '#18181c';
+                item.style.padding = '8px';
+                item.style.borderRadius = '4px';
+                item.innerHTML = `
+                    <span style="font-size: 0.9rem;">${game.title}</span>
+                    <div style="display: flex; gap: 5px;">
+                        <button data-index="${index}" class="edit-custom-btn" style="background: #00b4d8; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Editar</button>
+                        <button data-index="${index}" class="del-custom-btn" style="background: #e63946; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Eliminar</button>
+                    </div>
+                `;
+                adminGamesList.appendChild(item);
+            });
+
+            document.querySelectorAll('.edit-custom-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-index'));
+                    const game = customGames[idx];
+                    
+                    document.getElementById('qaTitle').value = game.title;
+                    document.getElementById('qaGenre').value = game.genre;
+                    document.getElementById('qaImg').value = game.img;
+                    
+                    document.getElementById('qaHasPc').checked = game.hasPc;
+                    document.getElementById('qaWeightPc').value = game.weightPc || '';
+                    document.getElementById('qaLinkPc').value = game.linkPc || '';
+                    
+                    document.getElementById('qaHasAndroid').checked = game.hasAndroid;
+                    document.getElementById('qaWeightAndroid').value = game.weightAndroid || '';
+                    document.getElementById('qaLinkAndroid').value = game.linkAndroid || '';
+                    
+                    document.getElementById('qaHasMod').checked = game.hasMod;
+                    document.getElementById('qaLinkMod').value = game.linkMod || '';
+
+                    editIndexInput.value = idx;
+                    formSectionTitle.textContent = `Editando: ${game.title}`;
+                    saveGameBtn.textContent = "Actualizar juego";
+                    saveGameBtn.style.backgroundColor = "#00b4d8";
+                    cancelEditBtn.style.display = "block";
+                    
+                    adminGamesList.scrollTop = 0;
+                });
+            });
+
+            document.querySelectorAll('.del-custom-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-index'));
+                    customGames.splice(idx, 1);
+                    localStorage.setItem('matateo_custom_games', JSON.stringify(customGames));
+                    if (parseInt(editIndexInput.value) === idx) {
+                        resetGameForm();
+                        quickAddForm.reset();
+                        editIndexInput.value = "-1";
+                    }
+                    renderAdminGames();
+                    renderAllContentOnGrid();
+                });
+            });
+        }
+
+        collectionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const index = parseInt(editColIndexInput.value);
+            const colTitle = document.getElementById('colTitle').value.trim();
+            const colGenre = document.getElementById('colGenre').value.trim();
+            const colMainImg = document.getElementById('colMainImg').value.trim();
+
+            let collections = JSON.parse(localStorage.getItem('matateo_collections_single_img') || '[]');
+
+            const newCollectionData = {
+                title: colTitle,
+                genre: colGenre,
+                mainImg: colMainImg,
+                subgames: [...currentCollectionSubgames]
+            };
+
+            if (index === -1) {
+                collections.push(newCollectionData);
+                alert("¡Colección creada con éxito!");
+            } else {
+                collections[index] = newCollectionData;
+                alert("¡Colección actualizada con éxito!");
+                resetColForm();
+            }
+
+            localStorage.setItem('matateo_collections_single_img', JSON.stringify(collections));
+            collectionForm.reset();
+            currentCollectionSubgames = [];
+            renderSubgamesFormList();
+            editColIndexInput.value = "-1";
+            renderAdminCollections();
+            renderAllContentOnGrid();
+        });
+
+        cancelColEditBtn.addEventListener('click', () => {
+            resetColForm();
+            collectionForm.reset();
+            currentCollectionSubgames = [];
+            renderSubgamesFormList();
+            editColIndexInput.value = "-1";
+        });
+
+        function resetColForm() {
+            formColTitle.textContent = "Crear Nueva Colección:";
+            saveColBtn.textContent = "Guardar Colección";
+            saveColBtn.style.backgroundColor = "#38b000";
+            cancelColEditBtn.style.display = "none";
+            currentCollectionSubgames = [];
+            renderSubgamesFormList();
+        }
+
+        function renderAdminCollections() {
+            let collections = JSON.parse(localStorage.getItem('matateo_collections_single_img') || '[]');
+            adminCollectionsList.innerHTML = '';
+            if (collections.length === 0) {
+                adminCollectionsList.innerHTML = '<p style="color: #888; font-size: 0.9rem;">No hay colecciones creadas.</p>';
+                return;
+            }
+            collections.forEach((col, index) => {
+                const item = document.createElement('div');
+                item.style.display = 'flex';
+                item.style.justifyContent = 'space-between';
+                item.style.alignItems = 'center';
+                item.style.background = '#18181c';
+                item.style.padding = '8px';
+                item.style.borderRadius = '4px';
+                item.innerHTML = `
+                    <span style="font-size: 0.9rem; font-weight: bold;">📁 ${col.title} (${col.subgames.length} juegos)</span>
+                    <div style="display: flex; gap: 5px;">
+                        <button data-index="${index}" class="edit-col-btn" style="background: #00b4d8; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Editar</button>
+                        <button data-index="${index}" class="del-col-btn" style="background: #e63946; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Eliminar</button>
+                    </div>
+                `;
+                adminCollectionsList.appendChild(item);
+            });
+
+            document.querySelectorAll('.edit-col-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-index'));
+                    const col = collections[idx];
+                    
+                    document.getElementById('colTitle').value = col.title;
+                    document.getElementById('colGenre').value = col.genre;
+                    document.getElementById('colMainImg').value = col.mainImg;
+                    
+                    currentCollectionSubgames = [...col.subgames];
+                    renderSubgamesFormList();
+
+                    editColIndexInput.value = idx;
+                    formColTitle.textContent = `Editando colección: ${col.title}`;
+                    saveColBtn.textContent = "Actualizar Colección";
+                    saveColBtn.style.backgroundColor = "#00b4d8";
+                    cancelColEditBtn.style.display = "block";
+                });
+            });
+
+            document.querySelectorAll('.del-col-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.getAttribute('data-index'));
+                    collections.splice(idx, 1);
+                    localStorage.setItem('matateo_collections_single_img', JSON.stringify(collections));
+                    
+                    if (parseInt(editColIndexInput.value) === idx) {
+                        resetColForm();
+                        collectionForm.reset();
+                        editColIndexInput.value = "-1";
+                    }
+                    renderAdminCollections();
+                    renderAllContentOnGrid();
+                });
+            });
+        }
+    });
+</script>
 </body>
 </html>
