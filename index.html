@@ -1132,7 +1132,7 @@
                     <input type="hidden" id="editIndex" value="-1">
                     <input type="text" id="qaTitle" placeholder="Título del juego" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
                     <input type="text" id="qaGenre" placeholder="Género" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
-                    <input type="text" id="qaImg" placeholder="Ruta de portada principal" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="qaImg" placeholder="URL o arrastra/pega imagen aquí (Ctrl+V)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
                     
                     <!-- CHECKBOXES Y PESOS -->
                     <div style="display: flex; flex-direction: column; gap: 8px; background: #1a1a1f; padding: 10px; border-radius: 6px; border: 1px solid #323238; margin-top: 5px;">
@@ -1178,7 +1178,7 @@
                     <input type="hidden" id="editColIndex" value="-1">
                     <input type="text" id="colTitle" placeholder="Título de la Colección (ej: FNAF: Primera Colección)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
                     <input type="text" id="colGenre" placeholder="Género de la colección (ej: Terror / Survival Horror)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
-                    <input type="text" id="colMainImg" placeholder="Ruta de la imagen completa superior (ej: portadas/fnaf_banner.png)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
+                    <input type="text" id="colMainImg" placeholder="URL o arrastra/pega imagen de banner (Ctrl+V)" required style="padding: 8px; background: #202024; border: 1px solid #323238; color: #fff; border-radius: 4px; outline: none;">
                     
                     <!-- GESTIÓN DE JUEGOS INTERNOS DE LA COLECCIÓN -->
                     <div style="background: #1a1a1f; padding: 10px; border-radius: 6px; border: 1px solid #323238; margin-top: 5px;">
@@ -1263,8 +1263,81 @@
         const newSubgameLink = document.getElementById('newSubgameLink');
         const addSubgameBtn = document.getElementById('addSubgameBtn');
 
+        const qaImgInput = document.getElementById('qaImg');
+        const colMainImgInput = document.getElementById('colMainImg');
+
         const PASSWORD = "xd";
 
+        // --- SISTEMA DE ARRASTRAR, SOLTAR Y PEGAR IMÁGENES ---
+        function setupImageDropAndPaste(inputElement) {
+            if (!inputElement) return;
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                inputElement.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                inputElement.addEventListener(eventName, () => {
+                    inputElement.style.borderColor = '#00b4d8';
+                    inputElement.style.background = '#2a2a35';
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                inputElement.addEventListener(eventName, () => {
+                    inputElement.style.borderColor = '#323238';
+                    inputElement.style.background = '#202024';
+                }, false);
+            });
+
+            inputElement.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    handleImageFile(files[0], inputElement);
+                }
+            });
+
+            inputElement.addEventListener('paste', (e) => {
+                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        const blob = items[i].getAsFile();
+                        handleImageFile(blob, inputElement);
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            });
+        }
+
+        function handleImageFile(file, targetInput) {
+            if (!file.type.startsWith('image/')) {
+                alert("Por favor, usa un archivo de imagen válido.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                targetInput.value = event.target.result;
+                targetInput.dispatchEvent(new Event('change'));
+                
+                const originalBorder = targetInput.style.borderColor;
+                targetInput.style.borderColor = '#38b000';
+                setTimeout(() => {
+                    targetInput.style.borderColor = originalBorder;
+                }, 1000);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Activamos la función en ambos inputs de imágenes
+        setupImageDropAndPaste(qaImgInput);
+        setupImageDropAndPaste(colMainImgInput);
+
+        // --- NAVEGACIÓN DE PESTAÑAS ---
         tabGamesBtn.addEventListener('click', () => {
             tabGamesBtn.style.background = '#7209b7';
             tabGamesBtn.style.color = 'white';
@@ -1299,7 +1372,7 @@
                 row.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #202024; padding: 6px 8px; border-radius: 4px; font-size: 0.85rem;";
                 row.innerHTML = `
                     <span style="color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px;">🎮 ${sub.title}</span>
-                    <button type="button" data-subindex="${idx}" class="remove-subgame-btn" style="background: #e63946; color: white; border: none; width: 22px; height: 22px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justifyContent: center;">-</button>
+                    <button type="button" data-subindex="${idx}" class="remove-subgame-btn" style="background: #e63946; color: white; border: none; width: 22px; height: 22px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
                 `;
                 collectionSubgamesContainer.appendChild(row);
             });
