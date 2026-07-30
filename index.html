@@ -1333,7 +1333,6 @@
             reader.readAsDataURL(file);
         }
 
-        // Activamos la función en ambos inputs de imágenes
         setupImageDropAndPaste(qaImgInput);
         setupImageDropAndPaste(colMainImgInput);
 
@@ -1464,19 +1463,24 @@
                 const card = document.createElement('div');
                 card.className = 'game-card custom-game-card';
                 
-                let detailsHTML = `<p class="game-details">🎮 Género: ${game.genre}</p>`;
+                // ORDEN CORRECTO: Primero peso(s), luego el género abajo, y sin duplicar
+                let detailsHTML = '';
                 let buttonsHTML = '';
 
                 if (game.hasPc && game.linkPc) {
-                    detailsHTML = `<p class="game-details">📦 Peso PC: ${game.weightPc || ''}</p>` + detailsHTML;
-                    buttonsHTML += `<a href="${game.linkPc}" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc">💻 Descargar para PC</a>`;
+                    detailsHTML += `<p class="game-details">📦 Peso PC: ${game.weightPc || ''}</p>`;
+                    buttonsHTML += `<a href="${game.linkPc}" target="_blank" rel="noopener noreferrer" class="download-btn btn-pc" data-translate="pc_download">💻 Descargar para PC</a>`;
                 }
                 if (game.hasAndroid && game.linkAndroid) {
-                    detailsHTML += `<p class="game-details">📦 Peso Android: ${game.weightAndroid || ''}</p>` + detailsHTML;
-                    buttonsHTML += `<a href="${game.linkAndroid}" target="_blank" rel="noopener noreferrer" class="download-btn btn-android">📱 Descargar para Android</a>`;
+                    detailsHTML += `<p class="game-details">📦 Peso Android: ${game.weightAndroid || ''}</p>`;
+                    buttonsHTML += `<a href="${game.linkAndroid}" target="_blank" rel="noopener noreferrer" class="download-btn btn-android" data-translate="android_download">📱 Descargar para Android</a>`;
                 }
+                
+                // El género va al final de los pesos
+                detailsHTML += `<p class="game-details">🎮 Género: ${game.genre}</p>`;
+
                 if (game.hasMod && game.linkMod) {
-                    buttonsHTML += `<a href="${game.linkMod}" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod">🔓 Descargar APK Mod</a>`;
+                    buttonsHTML += `<a href="${game.linkMod}" target="_blank" rel="noopener noreferrer" class="download-btn btn-mod" data-translate="mod_download">🔓 Descargar APK Mod</a>`;
                 }
 
                 card.innerHTML = `
